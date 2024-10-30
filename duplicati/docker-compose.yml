@@ -1,0 +1,23 @@
+name: duplicati
+services:
+  duplicati:
+    container_name: duplicati
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    hostname: duplicati
+    image: linuxserver/duplicati:latest
+    labels:
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Duplicati/icon.png
+    ports:
+      - 11111:8200
+    restart: unless-stopped
+    volumes:
+      - /DATA/AppData/duplicati/config:/config
+      - /DATA/AppData/duplicati/backups:/backups
+      - /DATA/AppData:/source
+    network_mode: bridge
+
+
+

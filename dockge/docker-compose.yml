@@ -1,0 +1,101 @@
+name: dockge
+services:
+  dockge:
+    cpu_shares: 90
+    command:
+      - bash
+      - -c
+      - node ./extra/clean-tsx-tmp.js && tsx ./backend/index.ts
+    container_name: dockge
+    deploy:
+      resources:
+        limits:
+          memory: 32013M
+    environment:
+      - DOCKGE_STACKS_DIR=/DATA/AppData/dockge/stacks
+      - NODE_VERSION=18.17.1
+      - PATH=/pnpm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - PNPM_HOME=/pnpm
+      - YARN_VERSION=1.22.19
+    image: louislam/dockge:latest
+    labels:
+      icon: https://github.com/walkxcode/dashboard-icons/blob/main/png/dockge.png?raw=true
+    ports:
+      - target: 5001
+        published: "11116"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /DATA/AppData/dockge/data
+        target: /app/data
+      - type: bind
+        source: /DATA/AppData/dockge/stacks
+        target: /DATA/AppData/dockge/stacks
+    x-casaos:
+      envs:
+        - container: DOCKGE_STACKS_DIR
+          description:
+            en_us: ""
+        - container: PATH
+          description:
+            en_us: ""
+        - container: NODE_VERSION
+          description:
+            en_us: ""
+        - container: YARN_VERSION
+          description:
+            en_us: ""
+        - container: PNPM_HOME
+          description:
+            en_us: ""
+      image: ""
+      ports:
+        - container: "5001"
+          description:
+            en_us: ""
+      volumes:
+        - container: /var/run/docker.sock
+          description:
+            en_us: ""
+        - container: /app/data
+          description:
+            en_us: ""
+        - container: /DATA/AppData/dockge/stacks
+          description:
+            en_us: ""
+    devices: []
+    cap_add: []
+    network_mode: dockge_default
+    privileged: false
+    hostname: dockge
+x-casaos:
+  architectures:
+    - amd64
+  author: CasaOS User
+  category: unknown
+  description:
+    en_us: ""
+  developer: unknown
+  hostname: ""
+  icon: https://github.com/walkxcode/dashboard-icons/blob/main/png/dockge.png?raw=true
+  image: null
+  index: /
+  is_uncontrolled: false
+  main: dockge
+  port_map: "11116"
+  scheme: http
+  store_app_id: dockge
+  tagline:
+    en_us: This is a compose app converted from a legacy app (CasaOS v0.4.3 or
+      earlier)
+  thumbnail: ""
+  tips:
+    custom: This is a compose app converted from a legacy app (CasaOS v0.4.3 or
+      earlier)
+  title:
+    custom: Dockge
+    en_us: dockge

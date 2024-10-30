@@ -1,0 +1,17 @@
+name: portainer
+services:
+  portainer:
+    container_name: portainer
+    hostname: portainer
+    image: portainer/portainer-ce:latest
+    labels:
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Portainer/icon.png
+    ports:
+      - 11112:8000
+      - 11113:9000
+      - 11114:9443
+    restart: unless-stopped
+    volumes:
+      - /DATA/AppData/portainer/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: bridge

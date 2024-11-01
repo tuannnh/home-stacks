@@ -2,7 +2,6 @@ services:
   db-migration:
     container_name: infisical-db-migration
     image: infisical/infisical:latest-postgres
-    env_file: stack.env
     command: npm run migration:latest
     pull_policy: always
     networks:
@@ -18,7 +17,6 @@ services:
         condition: service_completed_successfully
     image: infisical/infisical:latest-postgres
     pull_policy: always
-    env_file: stack.env
     ports:
       - 11116:8080
     environment:
@@ -29,7 +27,6 @@ services:
   redis:
     image: redis
     container_name: infisical-dev-redis
-    env_file: stack.env
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes

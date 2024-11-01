@@ -41,7 +41,7 @@ services:
     networks:
       - infisical
     volumes:
-      - redis_data:/data
+      - /DATA/AppData/redis/redis_data:/data
 
 networks:
   infisical:

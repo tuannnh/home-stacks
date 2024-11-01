@@ -1,34 +1,17 @@
-name: ddns-updater
+name: tuaniverse_chat
 services:
-  ddns-updater:
-    command:
-      - touch /data/config.json
-    container_name: ddns-updater
+  tuaniverse_chat:
+    container_name: tuaniverse-chatbot-ui
+    deploy:
+      resources:
+        limits:
+          memory: "4294967296"
     environment:
-      - BACKUP_DIRECTORY=/updater/data
-      - BACKUP_PERIOD=0
-      - CONFIG=
-      - HTTP_TIMEOUT=10s
-      - LISTENING_ADDRESS=:8000
-      - LOG_CALLER=hidden
-      - LOG_LEVEL=info
-      - PERIOD=5m
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - ROOT_URL=/
-      - TZ=Asia/Saigon
-      - UPDATE_COOLDOWN_PERIOD=5m
-    hostname: ddns-updater
-    image: qmcgaw/ddns-updater:latest
+      OPENAI_API_KEY: <OPEN_API_KEY>
+    hostname: chatbot-ui
+    image: tuannnh/chatbot-ui:latest
     labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Icone_wikipedia_bureaucrat_bot.svg/120px-Icone_wikipedia_bureaucrat_bot.svg.png
     ports:
-      - 11115:8000
+      - 11117:3000
     restart: unless-stopped
-    volumes:
-      - /DATA/AppData/ddns-updater/data:/updater/data
-    network_mode: bridge

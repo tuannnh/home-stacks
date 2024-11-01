@@ -1,34 +1,31 @@
-name: ddns-updater
+name: mongodb
 services:
-  ddns-updater:
-    command:
-      - touch /data/config.json
-    container_name: ddns-updater
+  mongo:
+    cpu_shares: 90
+    command: []
+    container_name: mongo
+    deploy:
+      resources:
+        limits:
+          memory: 32013M
     environment:
-      - BACKUP_DIRECTORY=/updater/data
-      - BACKUP_PERIOD=0
-      - CONFIG=
-      - HTTP_TIMEOUT=10s
-      - LISTENING_ADDRESS=:8000
-      - LOG_CALLER=hidden
-      - LOG_LEVEL=info
-      - PERIOD=5m
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - ROOT_URL=/
-      - TZ=Asia/Saigon
-      - UPDATE_COOLDOWN_PERIOD=5m
-    hostname: ddns-updater
-    image: qmcgaw/ddns-updater:latest
+      - PGID=1000
+      - PUID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    hostname: mongo
+    image: mongo:6.0.6
     labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Mongo/icon.png
     ports:
-      - 11115:8000
+      - target: 27017
+        published: "27017"
+        protocol: tcp
     restart: unless-stopped
     volumes:
-      - /DATA/AppData/ddns-updater/data:/updater/data
-    network_mode: bridge
+      - type: bind
+        source: /DATA/AppData/mongo/data/configdb
+        target: /data/configdb
+      - type: bind
+        source: /DATA/AppData/mongo/data/db
+        target: /data/db
+    privileged: false

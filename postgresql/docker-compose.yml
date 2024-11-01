@@ -1,34 +1,33 @@
-name: ddns-updater
+name: postgresql
 services:
-  ddns-updater:
-    command:
-      - touch /data/config.json
-    container_name: ddns-updater
+  postgresql:
+    cpu_shares: 90
+    command: []
+    container_name: postgresql
+    deploy:
+      resources:
+        limits:
+          memory: 32013M
+        reservations:
+          memory: "2147483648"
     environment:
-      - BACKUP_DIRECTORY=/updater/data
-      - BACKUP_PERIOD=0
-      - CONFIG=
-      - HTTP_TIMEOUT=10s
-      - LISTENING_ADDRESS=:8000
-      - LOG_CALLER=hidden
-      - LOG_LEVEL=info
-      - PERIOD=5m
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - ROOT_URL=/
-      - TZ=Asia/Saigon
-      - UPDATE_COOLDOWN_PERIOD=5m
-    hostname: ddns-updater
-    image: qmcgaw/ddns-updater:latest
+      - PGID=1000
+      - POSTGRES_DB=home
+      - POSTGRES_PASSWORD=P@ssW0rd
+      - POSTGRES_USER=ryan
+      - PUID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    hostname: postgresql
+    image: postgres:15.3
     labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/PostgreSQL/icon.png
     ports:
-      - 11115:8000
+      - target: 5432
+        published: "5432"
+        protocol: tcp
     restart: unless-stopped
     volumes:
-      - /DATA/AppData/ddns-updater/data:/updater/data
-    network_mode: bridge
+      - type: bind
+        source: /DATA/AppData/postgresql/data
+        target: /var/lib/postgresql/data
+    privileged: false

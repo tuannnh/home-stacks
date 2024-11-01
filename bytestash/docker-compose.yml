@@ -1,0 +1,11 @@
+name: bytestash
+services:
+  bytestash:
+    image: "ghcr.io/jordan-dalby/bytestash:latest"
+    container_name: bytestash
+    volumes:
+      - /DATA/AppData/bytestash:/data/snippets
+    ports:
+      - 11134:5000
+    restart: unless-stopped
+    network_mode: bridge

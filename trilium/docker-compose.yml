@@ -28,15 +28,3 @@ services:
     environment: []
     network_mode: bridge
     privileged: false
-x-casaos:
-  author: Jason McFeetors
-  category: Notes
-  developer: zadam
-  hostname: ""
-  icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Trilium/icon.png
-  index: /
-  is_uncontrolled: true
-  port_map: "11132"
-  scheme: http
-  title:
-    en_us: Trilium

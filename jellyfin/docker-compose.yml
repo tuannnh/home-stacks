@@ -1,34 +1,54 @@
-name: ddns-updater
+name: jellyfin
 services:
-  ddns-updater:
-    command:
-      - touch /data/config.json
-    container_name: ddns-updater
+  jellyfin:
+    container_name: jellyfin
+    deploy:
+      resources:
+        limits:
+          memory: 8192M
+        reservations:
+          memory: "268435456"
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/vcsm:/dev/vcsm
+      - /dev/vchiq:/dev/vchiq
+      - /dev/video10:/dev/video10
+      - /dev/video11:/dev/video11
+      - /dev/video12:/dev/video12
     environment:
-      - BACKUP_DIRECTORY=/updater/data
-      - BACKUP_PERIOD=0
-      - CONFIG=
-      - HTTP_TIMEOUT=10s
-      - LISTENING_ADDRESS=:8000
-      - LOG_CALLER=hidden
-      - LOG_LEVEL=info
-      - PERIOD=5m
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - ROOT_URL=/
-      - TZ=Asia/Saigon
-      - UPDATE_COOLDOWN_PERIOD=5m
-    hostname: ddns-updater
-    image: qmcgaw/ddns-updater:latest
+      - PGID=1000
+      - PUID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    hostname: jellyfin
+    image: linuxserver/jellyfin:10.9.6
     labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
+      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Jellyfin/icon.png
     ports:
-      - 11115:8000
+      - target: 8096
+        published: "11121"
+        protocol: tcp
+      - target: 8920
+        published: "8921"
+        protocol: tcp
+      - target: 7359
+        published: "7359"
+        protocol: tcp
+      - target: 1900
+        published: "1901"
+        protocol: tcp
     restart: unless-stopped
     volumes:
-      - /DATA/AppData/ddns-updater/data:/updater/data
+      - type: bind
+        source: /DATA/AppData/jellyfin/config
+        target: /config
+      - type: bind
+        source: /server_data/syncthing
+        target: /Media/Syncthing
+      - type: bind
+        source: /opt/vc/lib
+        target: /opt/vc/lib
+      - type: bind
+        source: /server_data/torrents
+        target: /Media/Torrents
     network_mode: bridge
+    privileged: false

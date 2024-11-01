@@ -1,34 +1,16 @@
-name: ddns-updater
 services:
-  ddns-updater:
-    command:
-      - touch /data/config.json
-    container_name: ddns-updater
-    environment:
-      - BACKUP_DIRECTORY=/updater/data
-      - BACKUP_PERIOD=0
-      - CONFIG=
-      - HTTP_TIMEOUT=10s
-      - LISTENING_ADDRESS=:8000
-      - LOG_CALLER=hidden
-      - LOG_LEVEL=info
-      - PERIOD=5m
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - ROOT_URL=/
-      - TZ=Asia/Saigon
-      - UPDATE_COOLDOWN_PERIOD=5m
-    hostname: ddns-updater
-    image: qmcgaw/ddns-updater:latest
-    labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
-    ports:
-      - 11115:8000
+  market:
+    image: tuannnh/market:latest
     restart: unless-stopped
-    volumes:
-      - /DATA/AppData/ddns-updater/data:/updater/data
-    network_mode: bridge
+    ports:
+      - 11131:8501
+    volumes: []
+    environment:
+      - DB_NAME=market
+      - DB_USER=ryan
+      - DB_PASSWORD=P@ssW0rd
+      - DB_HOST=10.1.1.99
+      - DB_PORT=5432
+      - GOLD_URL=http://giavang.doji.vn/
+      - CURRENCY_URL=https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx
+networks: {}

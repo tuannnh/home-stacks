@@ -113,17 +113,5 @@ networks:
   default:
     name: change-detection
     driver: bridge
-x-casaos:
-  author: TBD
-  category: Monitoring
-  developer: dgtlmoon
-  hostname: ""
-  icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Trilium/icon.png
-  index: /
-  is_uncontrolled: true
-  port_map: "11132"
-  scheme: http
-  title:
-    en_us: Change-Detection
 
 

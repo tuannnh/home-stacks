@@ -11,13 +11,12 @@ services:
     labels:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Duplicati/icon.png
     ports:
-      - 11111:8200
+      - 11135:8200
     restart: unless-stopped
     volumes:
       - /DATA/AppData/duplicati/config:/config
       - /DATA/AppData/duplicati/backups:/backups
       - /DATA/AppData:/source
-    network_mode: bridge
 
 
 

@@ -1,0 +1,17 @@
+name: filebrowser
+services:
+  bytestash:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    volumes:
+      - /:/srv
+      - /DATA/AppData/filebrowser/settings.json:/config/settings.json
+      - /DATA/AppData/filebrowser/filebrowser.db:/database/filebrowser.db
+    ports:
+      - 11112:80
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    restart: unless-stopped
+    network_mode: bridge

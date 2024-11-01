@@ -8,7 +8,7 @@ services:
       - /DATA/AppData/filebrowser/settings.json:/config/settings.json
       - /DATA/AppData/filebrowser/filebrowser.db:/database/filebrowser.db
     ports:
-      - 11112:80
+      - 11115:80
     environment:
       - PUID=1000
       - PGID=1000

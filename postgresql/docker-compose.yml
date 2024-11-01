@@ -26,8 +26,14 @@ services:
         published: "5432"
         protocol: tcp
     restart: unless-stopped
+    healthcheck:
+      test: "pg_isready --username=${POSTGRES_USER} && psql --username=${POSTGRES_USER} --list"
+      interval: 5s
+      timeout: 10s
+      retries: 10
     volumes:
       - type: bind
         source: /DATA/AppData/postgresql/data
         target: /var/lib/postgresql/data
     privileged: false
+    network_mode: bridge

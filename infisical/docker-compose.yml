@@ -7,7 +7,7 @@ services:
     networks:
       - infisical
 
-  backend:
+  infisical:
     container_name: infisical-backend
     restart: unless-stopped
     depends_on:

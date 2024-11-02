@@ -1,3 +1,4 @@
+name: leetbot
 services:
   leetbot:
     image: tuannnh/leetbot:latest

@@ -1,3 +1,4 @@
+name: market
 services:
   market:
     image: tuannnh/market:latest

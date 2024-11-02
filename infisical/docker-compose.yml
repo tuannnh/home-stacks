@@ -1,12 +1,12 @@
 services:
-  db-migration:
-    container_name: infisical-db-migration
-    env_file: stack.env
-    image: infisical/infisical:latest-postgres
-    command: npm run migration:latest
-    pull_policy: always
-    networks:
-      - infisical
+#  db-migration:
+#    container_name: infisical-db-migration
+#    env_file: stack.env
+#    image: infisical/infisical:latest-postgres
+#    command: npm run migration:latest
+#    pull_policy: always
+#    networks:
+#      - infisical
 
   infisical:
     container_name: infisical-backend

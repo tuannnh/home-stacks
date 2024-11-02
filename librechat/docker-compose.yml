@@ -16,7 +16,6 @@ services:
       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
     volumes:
       - /DATA/AppData/bipal/librechat.yaml:/app/librechat.yaml
-      - stack.env:/app/.env
       - /DATA/AppData/bipal/images:/app/client/public/images
       - /DATA/AppData/bipal/logs:/app/api/logs
 
@@ -47,5 +46,3 @@ services:
     restart: always
     depends_on:
       - vectordb
-    env_file:
-      - stack.env

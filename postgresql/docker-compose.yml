@@ -10,13 +10,6 @@ services:
           memory: 32013M
         reservations:
           memory: "2147483648"
-    environment:
-      - PGID=1000
-      - POSTGRES_DB=home
-      - POSTGRES_PASSWORD=P@ssW0rd
-      - POSTGRES_USER=ryan
-      - PUID=1000
-      - TZ=Asia/Ho_Chi_Minh
     hostname: postgresql
     image: postgres:15.3
     labels:

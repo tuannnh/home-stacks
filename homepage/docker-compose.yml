@@ -2,6 +2,8 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
+    env_file:
+      - stack.env
     environment:
       PUID: 1000 # optional, your user id
       PGID: 987 # optional, your group id

@@ -7,4 +7,5 @@ services:
     ports:
       - 11123:8501
     network_mode: bridge
-
+    env_file:
+      - stack.env

@@ -30,6 +30,8 @@ services:
       - MEILI_NO_ANALYTICS=true
     volumes:
       - /DATA/AppData/bipal/meili_data:/meili_data
+    env_file:
+      - stack.env
 
   vectordb:
     container_name: vectordb
@@ -37,6 +39,8 @@ services:
     restart: always
     volumes:
       - /DATA/AppData/bipal/vectordb:/var/lib/postgresql/data
+    env_file:
+      - stack.env
 
   rag_api:
     container_name: rag_api

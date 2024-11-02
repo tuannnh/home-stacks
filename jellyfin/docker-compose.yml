@@ -10,8 +10,8 @@ services:
           memory: "268435456"
     devices:
       - /dev/dri:/dev/dri
-      - /dev/vcsm:/dev/vcsm
-      - /dev/vchiq:/dev/vchiq
+      - /dev/vcsm-cma:/dev/vcsm-cma
+      - /dev/vchiq:/dev/chiq
       - /dev/video10:/dev/video10
       - /dev/video11:/dev/video11
       - /dev/video12:/dev/video12

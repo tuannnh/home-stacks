@@ -3,7 +3,7 @@ services:
     image: tuannnh/leetbot:latest
     restart: unless-stopped
     ports:
-      - 11129:8000
+      - 11122:8000
     environment:
       - OPEN_API_KEY=<OPEN_API_KEY>
     network_mode: bridge

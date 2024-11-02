@@ -19,7 +19,7 @@ services:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Syncthing/icon.png
     ports:
       - target: 8384
-        published: "11118"
+        published: "11125"
         protocol: tcp
       - target: 22000
         published: "22000"

@@ -11,7 +11,7 @@ services:
     labels:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Duplicati/icon.png
     ports:
-      - 11135:8200
+      - 11120:8200
     restart: unless-stopped
     volumes:
       - /DATA/AppData/duplicati/config:/config

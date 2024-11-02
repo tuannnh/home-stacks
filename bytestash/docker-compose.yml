@@ -6,6 +6,6 @@ services:
     volumes:
       - /DATA/AppData/bytestash:/data/snippets
     ports:
-      - 11134:5000
+      - 11127:5000
     restart: unless-stopped
     network_mode: bridge

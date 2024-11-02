@@ -3,6 +3,6 @@ services:
     image: tuannnh/market:latest
     restart: unless-stopped
     ports:
-      - 11131:8501
+      - 11123:8501
     network_mode: bridge
 

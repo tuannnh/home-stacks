@@ -27,7 +27,7 @@ services:
     labels:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/DDNS-Updater/icon.png
     ports:
-      - 11115:8000
+      - 11119:8000
     restart: unless-stopped
     volumes:
       - /DATA/AppData/ddns-updater/data:/updater/data

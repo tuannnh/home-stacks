@@ -2,6 +2,7 @@ name: market
 services:
   market:
     image: tuannnh/market:latest
+    container_name: market
     restart: unless-stopped
     ports:
       - 11123:8501

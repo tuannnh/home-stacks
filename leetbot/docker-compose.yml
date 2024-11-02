@@ -2,6 +2,7 @@ name: leetbot
 services:
   leetbot:
     image: tuannnh/leetbot:latest
+    container_name: leetbot
     restart: unless-stopped
     ports:
       - 11122:8000

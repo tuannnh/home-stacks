@@ -24,7 +24,7 @@ services:
     container_name: chat-meilisearch
     image: getmeili/meilisearch:v1.7.3
     restart: always
-    user: "${UID}:${GID}"
+#    user: "${UID}:${GID}"
     environment:
       - MEILI_HOST=http://meilisearch:7700
       - MEILI_NO_ANALYTICS=true

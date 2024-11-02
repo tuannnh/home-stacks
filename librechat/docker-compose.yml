@@ -19,6 +19,7 @@ services:
       - stack.env:/app/.env
       - /DATA/AppData/bipal/images:/app/client/public/images
       - /DATA/AppData/bipal/logs:/app/api/logs
+
   meilisearch:
     container_name: chat-meilisearch
     image: getmeili/meilisearch:v1.7.3
@@ -29,12 +30,14 @@ services:
       - MEILI_NO_ANALYTICS=true
     volumes:
       - /DATA/AppData/bipal/meili_data:/meili_data
+
   vectordb:
     container_name: vectordb
     image: ankane/pgvector:latest
     restart: always
     volumes:
       - /DATA/AppData/bipal/vectordb:/var/lib/postgresql/data
+
   rag_api:
     container_name: rag_api
     image: ghcr.io/danny-avila/librechat-rag-api-dev-lite:latest

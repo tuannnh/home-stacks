@@ -4,7 +4,7 @@ services:
     container_name: homepage
     environment:
       PUID: 1000 # optional, your user id
-      PGID: 1000 # optional, your group id
+      PGID: 987 # optional, your group id
     ports:
       - 11111:3000
     volumes:

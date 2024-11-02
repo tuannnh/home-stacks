@@ -4,13 +4,5 @@ services:
     restart: unless-stopped
     ports:
       - 11131:8501
-    volumes: []
-    environment:
-      - DB_NAME=market
-      - DB_USER=ryan
-      - DB_PASSWORD=P@ssW0rd
-      - DB_HOST=10.1.1.99
-      - DB_PORT=5432
-      - GOLD_URL=http://giavang.doji.vn/
-      - CURRENCY_URL=https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx
-networks: {}
+    network_mode: bridge
+

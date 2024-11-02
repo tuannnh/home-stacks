@@ -6,3 +6,4 @@ services:
       - 11129:8000
     environment:
       - OPEN_API_KEY=<OPEN_API_KEY>
+    network_mode: bridge

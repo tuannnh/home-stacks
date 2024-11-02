@@ -1,7 +1,7 @@
 services:
   db-migration:
     container_name: infisical-db-migration
-    env_file: .env
+    env_file: stack.env
     image: infisical/infisical:latest-postgres
     command: npm run migration:latest
     pull_policy: always
@@ -11,7 +11,7 @@ services:
   infisical:
     container_name: infisical-backend
     restart: unless-stopped
-    env_file: .env
+    env_file: stack.env
     depends_on:
       redis:
         condition: service_started
@@ -27,7 +27,7 @@ services:
   redis:
     image: redis
     container_name: infisical-dev-redis
-    env_file: .env
+    env_file: stack.env
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes

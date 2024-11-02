@@ -10,6 +10,7 @@ services:
     volumes:
       - /DATA/AppData/homepage/config:/app/config # Make sure your local config directory exists
       - /DATA/AppData/homepage/images:/app/public/images
+      - /DATA/AppData/homepage/icons:/app/public/icons
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: unless-stopped
     network_mode: bridge

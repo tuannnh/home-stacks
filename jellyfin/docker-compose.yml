@@ -10,19 +10,12 @@ services:
           memory: "268435456"
     devices:
       - /dev/dri:/dev/dri
-      - /dev/vcsm-cma:/dev/vcsm-cma
-      - /dev/vchiq:/dev/chiq
-      - /dev/video10:/dev/video10
-      - /dev/video11:/dev/video11
-      - /dev/video12:/dev/video12
     environment:
       - PGID=1000
       - PUID=1000
       - TZ=Asia/Ho_Chi_Minh
     hostname: jellyfin
-    image: linuxserver/jellyfin:10.9.6
-    labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Jellyfin/icon.png
+    image: linuxserver/jellyfin:latest
     ports:
       - target: 8096
         published: "11121"

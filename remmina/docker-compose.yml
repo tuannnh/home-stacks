@@ -1,0 +1,15 @@
+services:
+  remmina:
+    image: lscr.io/linuxserver/remmina:latest
+    container_name: remmina
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - /DATA/AppData/remmina/config:/config
+    ports:
+      - 11129:3000
+      - 11130:3001
+    restart: unless-stopped
+    network_mode: bridge

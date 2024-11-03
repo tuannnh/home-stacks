@@ -7,7 +7,7 @@ services:
     image: ghcr.io/ylianst/meshcentral:master # 1.1.27 is a version number OR use master for the master branch of bug fixes
     ports:
       - 11129:80 # HTTP
-      - 4433:4433 # AMT (Optional)
+      - 11130:443
     volumes:
       - /DATA/AppData/meshcentral/data:/opt/meshcentral/meshcentral-data # config.json and other important files live here
       - /DATA/AppData/meshcentral/user_files:/opt/meshcentral/meshcentral-files # where file uploads for users live

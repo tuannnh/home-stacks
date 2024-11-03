@@ -1,0 +1,11 @@
+services:
+  linkwarden:
+    container_name: linkwarden
+    env_file: stack.env
+    restart: unless-stopped
+    # build: . # uncomment this line to build from source
+    image: ghcr.io/linkwarden/linkwarden:latest # comment this line to build from source
+    ports:
+      - 11128:3000
+    volumes:
+      - /DATA/AppData/linkwarden/data:/data/data

@@ -6,6 +6,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Ho_Chi_Minh
+      - CUSTOM_USER=${CUSTOM_USER}
+      - PASSWORD=${PASSWORD}
+      - TITLE=${TITLE}
     volumes:
       - /DATA/AppData/remmina/config:/config
     ports:

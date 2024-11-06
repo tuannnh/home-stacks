@@ -1,0 +1,13 @@
+name: bytebase
+services:
+  bytebase:
+    image: bytebase/bytebase:latest
+    container_name: bytebase
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/bytebase:/var/opt/bytebase
+    ports:
+      - 11131:8080
+    restart: unless-stopped
+    network_mode: bridge

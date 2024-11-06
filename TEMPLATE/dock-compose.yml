@@ -1,0 +1,13 @@
+name: stack_name
+services:
+  stack_name:
+    image: image_url
+    container_name: container_name
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/app_name:/data/
+    ports:
+      - host:local
+    restart: unless-stopped
+    network_mode: bridge

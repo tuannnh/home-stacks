@@ -1,0 +1,11 @@
+name: picsur
+services:
+  picsur:
+    image: ghcr.io/caramelfur/picsur:latest
+    container_name: picsur
+    env_file:
+      - stack.env
+    ports:
+      - 11132:8080
+    restart: unless-stopped
+    network_mode: bridge

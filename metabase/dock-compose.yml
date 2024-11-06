@@ -1,0 +1,19 @@
+name: metabase
+services:
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    env_file:
+      - stack.env
+    volumes:
+      - /dev/urandom:/dev/random:ro
+      - /DATA/AppData/metabase:/metabase-data
+    ports:
+      - 11133:3000
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    network_mode: bridge

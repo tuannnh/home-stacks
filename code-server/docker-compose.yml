@@ -1,0 +1,13 @@
+name: code-server
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/code-server/config:/config/
+    ports:
+      - 11136:8443
+    restart: unless-stopped
+    network_mode: bridge

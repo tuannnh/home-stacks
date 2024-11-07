@@ -1,0 +1,14 @@
+name: speedtest-tracker
+services:
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    env_file:
+      - stack.env
+    ports:
+      - 11135:8080
+    volumes:
+      - /DATA/AppData/speedtest-tracker:/config
+      - /DATA/AppData/speedtest-tracker:/data
+    restart: unless-stopped
+    network_mode: bridge

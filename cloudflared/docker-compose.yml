@@ -1,4 +1,4 @@
-name: stack_name
+name: cloudflared
 services:
   cloudflared:
     image: cloudflare/cloudflared:latest

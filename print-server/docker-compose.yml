@@ -1,0 +1,13 @@
+name: print-server
+services:
+  print-server:
+    image: olbat/cupsd
+    container_name: print-server
+    env_file:
+      - stack.env
+    volumes:
+      - /var/run/dbus:/var/run/dbus
+    ports:
+      - 631:631
+    restart: unless-stopped
+    network_mode: bridge

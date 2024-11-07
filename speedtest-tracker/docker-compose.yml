@@ -6,7 +6,7 @@ services:
     env_file:
       - stack.env
     ports:
-      - 11135:8080
+      - 11135:80
     volumes:
       - /DATA/AppData/speedtest-tracker:/config
     restart: unless-stopped

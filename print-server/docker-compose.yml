@@ -7,7 +7,9 @@ services:
       - stack.env
     volumes:
       - /var/run/dbus:/var/run/dbus
+      - /dev/bus/usb:/dev/bus/usb
     ports:
       - 631:631
     restart: unless-stopped
     network_mode: bridge
+    privileged: true

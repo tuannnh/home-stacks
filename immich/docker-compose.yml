@@ -97,6 +97,6 @@ services:
       - immich
 
 networks:
-  default:
+  immich:
     name: immich
     driver: bridge

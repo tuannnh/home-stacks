@@ -76,6 +76,6 @@ services:
       - ollama-cpu
 
 networks:
-  default:
+  n8n:
     name: n8n
     driver: bridge

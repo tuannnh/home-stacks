@@ -64,6 +64,6 @@ services:
       - bipal
 
 networks:
-  default:
+  bipal:
     name: bipal
     driver: bridge

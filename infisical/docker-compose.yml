@@ -39,7 +39,7 @@ services:
       - /DATA/AppData/infisical/redis/redis_data:/data
 
 networks:
-  default:
+  infisical:
     name: infisical
     driver: bridge
 

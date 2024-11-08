@@ -28,7 +28,6 @@ services:
     restart: unless-stopped
     healthcheck:
       disable: false
-      test: curl --fail http://localhost:2283/health || exit 1
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -45,7 +44,6 @@ services:
     restart: unless-stopped
     healthcheck:
       disable: false
-      test: curl --fail http://localhost:2283/health || exit 1
 
   redis:
     container_name: immich_redis

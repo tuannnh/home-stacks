@@ -9,3 +9,4 @@ services:
       - 11128:3000
     volumes:
       - /DATA/AppData/linkwarden/data:/data/data
+    network_mode: bridge

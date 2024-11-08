@@ -29,3 +29,4 @@ services:
         source: /DATA/AppData/mongo/data/db
         target: /data/db
     privileged: false
+    network_mode: bridge

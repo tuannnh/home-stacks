@@ -31,3 +31,4 @@ services:
     restart: unless-stopped
     volumes:
       - /DATA/AppData/ddns-updater/data:/updater/data
+    network_mode: bridge

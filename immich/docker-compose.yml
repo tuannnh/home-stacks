@@ -22,6 +22,8 @@ services:
       - stack.env
     ports:
       - '11134:2283'
+    networks:
+      - immich
     depends_on:
       - redis
       - database
@@ -42,6 +44,8 @@ services:
     env_file:
       - stack.env
     restart: unless-stopped
+    networks:
+      - immich
     healthcheck:
       disable: false
 
@@ -51,6 +55,8 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: unless-stopped
+    networks:
+      - immich
 
   database:
     container_name: immich_postgres
@@ -87,3 +93,10 @@ services:
         'wal_compression=on',
       ]
     restart: unless-stopped
+    networks:
+      - immich
+
+networks:
+  default:
+    name: immich
+    driver: bridge

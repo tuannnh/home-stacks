@@ -8,6 +8,8 @@ services:
     image: ghcr.io/danny-avila/librechat-dev:latest
     restart: always
     user: "${UID}:${GID}"
+    networks:
+      - bipal
     env_file:
       - stack.env
     environment:
@@ -17,7 +19,7 @@ services:
       - RAG_PORT=${RAG_PORT:-8000}
       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
     volumes:
-#      - /DATA/AppData/bipal/librechat.yaml:/app/librechat.yaml
+      #      - /DATA/AppData/bipal/librechat.yaml:/app/librechat.yaml
       - /DATA/AppData/bipal/images:/app/client/public/images
       - /DATA/AppData/bipal/logs:/app/api/logs
 
@@ -25,7 +27,9 @@ services:
     container_name: chat-meilisearch
     image: getmeili/meilisearch:v1.7.3
     restart: always
-#    user: "${UID}:${GID}"
+    networks:
+      - bipal
+    #    user: "${UID}:${GID}"
     environment:
       - MEILI_HOST=http://meilisearch:7700
       - MEILI_NO_ANALYTICS=true
@@ -40,6 +44,8 @@ services:
     restart: always
     volumes:
       - /DATA/AppData/bipal/vectordb:/var/lib/postgresql/data
+    networks:
+      - bipal
     env_file:
       - stack.env
 
@@ -54,3 +60,10 @@ services:
       - vectordb
     env_file:
       - stack.env
+    networks:
+      - bipal
+
+networks:
+  default:
+    name: bipal
+    driver: bridge

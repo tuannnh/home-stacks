@@ -17,7 +17,7 @@ services:
       - stack.env
     networks: [ 'n8n' ]
     container_name: n8n
-#    user: "${UID}:${GID}"
+    user: "${UID}:${GID}"
     restart: unless-stopped
     ports:
       - 11137:5678

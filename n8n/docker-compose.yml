@@ -51,8 +51,6 @@ services:
       - /DATA/AppData/n8n/backup:/backup
       - /DATA/AppData/n8n/shared:/data/shared
     depends_on:
-      postgres:
-        condition: service_healthy
       n8n-import:
         condition: service_completed_successfully
 

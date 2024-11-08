@@ -40,7 +40,6 @@ services:
       - /DATA/AppData/n8n/qdrant_storage:/qdrant/storage
 
   ollama-cpu:
-    profiles: [ "cpu" ]
     image: ollama/ollama:latest
     container_name: ollama
     networks: [ 'n8n' ]

@@ -26,17 +26,17 @@ x-init-ollama: &init-ollama
     - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.2"
 
 services:
-  n8n-import:
-    <<: *service-n8n
-    container_name: n8n-import
-    env_file:
-      - stack.env
-    entrypoint: /bin/sh
-    command:
-      - "-c"
-      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
-    volumes:
-      - /DATA/AppData/n8n/backup:/backup
+#  n8n-import:
+#    <<: *service-n8n
+#    container_name: n8n-import
+#    env_file:
+#      - stack.env
+#    entrypoint: /bin/sh
+#    command:
+#      - "-c"
+#      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
+#    volumes:
+#      - /DATA/AppData/n8n/backup:/backup
 
   n8n:
     <<: *service-n8n
@@ -50,9 +50,9 @@ services:
       - /DATA/AppData/n8n/storage:/home/node/.n8n
       - /DATA/AppData/n8n/backup:/backup
       - /DATA/AppData/n8n/shared:/data/shared
-    depends_on:
-      n8n-import:
-        condition: service_completed_successfully
+#    depends_on:
+#      n8n-import:
+#        condition: service_completed_successfully
 
   qdrant:
     image: qdrant/qdrant

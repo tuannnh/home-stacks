@@ -1,14 +1,7 @@
 name: qbittorrent
 services:
   qbittorrent:
-    cpu_shares: 90
     container_name: qbittorrent
-    deploy:
-      resources:
-        limits:
-          memory: 4096M
-        reservations:
-          memory: "268435456"
     environment:
       - PGID=1000
       - PUID=1000
@@ -19,16 +12,11 @@ services:
     labels:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/qBittorrent/icon.png
     ports:
-      - target: 8080
-        published: "11124"
-        protocol: tcp
+      - "11124:8080"
     restart: unless-stopped
     volumes:
-      - type: bind
-        source: /DATA/AppData/qbittorrent/config
-        target: /config
-      - type: bind
-        source: /server_data/torrents/
-        target: /DATA
+      - /DATA/AppData/qbittorrent/config:/config
+      - /server_data/torrents/:/DATA/torrents
+      - /server_data/media/:/DATA/media
     network_mode: bridge
     privileged: false

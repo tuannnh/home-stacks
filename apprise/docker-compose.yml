@@ -9,6 +9,6 @@ services:
       - /DATA/AppData/apprise/config:/config
       - /DATA/AppData/apprise/attachments:/attachments
     ports:
-      - "11141:8000"
+      - "11140:8000"
     restart: unless-stopped
     network_mode: bridge

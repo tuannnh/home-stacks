@@ -1,0 +1,13 @@
+name: focalboard
+services:
+  focalboard:
+    image: mattermost/focalboard:latest
+    container_name: focalboard
+    env_file:
+      - stack.env
+#    volumes:
+#      - /DATA/AppData/app_name:/data/
+    ports:
+      - 11140:8000
+    restart: unless-stopped
+    network_mode: bridge

@@ -5,7 +5,7 @@ services:
     container_name: ntfy
     command:
       - serve
-    user: ${PUID}:${PGID}
+#    user: ${PUID}:${PGID}
     env_file:
       - stack.env
     volumes:

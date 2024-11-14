@@ -1,29 +1,15 @@
 name: portainer
 services:
   portainer:
-    cpu_shares: 90
-    command: []
     container_name: portainer
-    deploy:
-      resources:
-        limits:
-          memory: 32013M
-        reservations:
-          memory: "33554432"
     hostname: portainer
     image: portainer/portainer-ce:latest
     labels:
       icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Portainer/icon.png
     ports:
-      - target: 8000
-        published: "11112"
-        protocol: tcp
-      - target: 9000
-        published: "11113"
-        protocol: tcp
-      - target: 9443
-        published: "11114"
-        protocol: tcp
+      - "11112:8000"
+      - "11113:9000"
+      - "11114:9443"
     restart: unless-stopped
     volumes:
       - type: bind

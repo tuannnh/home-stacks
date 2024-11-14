@@ -1,0 +1,16 @@
+name: stack_name
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: stirling-pdf
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/stirling-pdf/configs:/configs
+      - /DATA/AppData/stirling-pdf/trainingData:/usr/share/tessdata
+      - /DATA/AppData/stirling-pdf/logs:/logs
+      - /DATA/AppData/stirling-pdf/customFiles:/customFiles/
+    ports:
+      - "11142:8080"
+    restart: unless-stopped
+    network_mode: bridge

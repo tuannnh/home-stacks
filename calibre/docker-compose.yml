@@ -1,0 +1,14 @@
+name: calibre
+services:
+  calibre:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/calibre/config:/config
+      - /DATA/AppData/calibre/library:/books
+    ports:
+      - "11143:8083"
+    restart: unless-stopped
+    network_mode: bridge

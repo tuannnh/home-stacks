@@ -179,7 +179,7 @@ services:
 
   qbittorrent-media:
     image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
+    container_name: qbittorrent-media
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

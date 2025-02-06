@@ -4,7 +4,6 @@ name: media
 networks:
   media:
     name: media
-    external: true
 ##############NETWORKS##############
 
 services:

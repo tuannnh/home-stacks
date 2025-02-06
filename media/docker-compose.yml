@@ -2,8 +2,12 @@ name: media
 
 ##############NETWORKS##############
 networks:
-  media:
+  default:
     name: media
+    external: true
+  vpn:
+    name: vpn
+    external: true
 ##############NETWORKS##############
 
 services:
@@ -21,8 +25,6 @@ services:
     ports:
       - "33331:6767"
     restart: unless-stopped
-    networks:
-      - media
 
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
@@ -36,8 +38,6 @@ services:
     restart: unless-stopped
     ports:
       - "33332:8686"
-    networks:
-      - media
 
   nzbget: #usenet download agent
     image: ghcr.io/linuxserver/nzbget
@@ -65,8 +65,6 @@ services:
     ports:
       - "33334:5055"
     restart: unless-stopped
-    networks:
-      - media
 
   plex: # Media Server
     container_name: plex
@@ -101,8 +99,6 @@ services:
     ports:
       - "33335:9696"
     restart: unless-stopped
-    networks:
-      - media
 
   radarr: #movie search agent
     image: ghcr.io/linuxserver/radarr
@@ -135,8 +131,6 @@ services:
     ports:
       - "33337:8989"
     restart: unless-stopped
-    networks:
-      - media
 
   tautulli: #plex monitoring
     image: ghcr.io/linuxserver/tautulli:latest
@@ -152,8 +146,6 @@ services:
     ports:
       - "33338:8181"
     restart: unless-stopped
-    networks:
-      - media
 
   gluetun:
     image: qmcgaw/gluetun
@@ -175,6 +167,7 @@ services:
       - "6881:6881"
       - "6881:6881/udp"
     networks:
+      - vpn
       - media
 
   qbittorrent-media:
@@ -194,4 +187,6 @@ services:
     #      - 6881:6881/udp
     network_mode: service:gluetun
     restart: unless-stopped
+    networks:
+      - vpn
 

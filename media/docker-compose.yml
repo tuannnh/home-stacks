@@ -1,0 +1,198 @@
+name: media
+
+##############NETWORKS##############
+networks:
+  media:
+    name: media
+    external: true
+##############NETWORKS##############
+
+services:
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/bazarr:/config
+      - ${MEDIA_DIR}/media/movies:/movies #optional
+      - ${MEDIA_DIR}/media/tv:/tv #optional
+    ports:
+      - "33331:6767"
+    restart: unless-stopped
+    networks:
+      - media
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/lidarr:/config
+      - ${MEDIA_DIR}:/media
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    restart: unless-stopped
+    ports:
+      - "33332:8686"
+    networks:
+      - media
+
+  nzbget: #usenet download agent
+    image: ghcr.io/linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/nzbget:/config
+      - ${MEDIA_DIR}/usenet:/media/usenet
+    ports:
+      - "33333:6789"
+    restart: unless-stopped
+
+  overseerr: #media requesting tool
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/overseerr:/app/config
+    ports:
+      - "33334:5055"
+    restart: unless-stopped
+    networks:
+      - media
+
+  plex: # Media Server
+    container_name: plex
+    image: ghcr.io/hotio/plex
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=002
+      - DEBUG=no
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - PLEX_PASS=${PLEX_PASS}
+      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/plex:/config:rw
+      - ${PLEX_MEDIA}:/data/media:rw
+      - /tmp:/transcode:rw
+    network_mode: host
+
+  prowlarr: #indexer manager for Sonarr & Radarr
+    image: ghcr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/prowlarr:/config
+    ports:
+      - "33335:9696"
+    restart: unless-stopped
+    networks:
+      - media
+
+  radarr: #movie search agent
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=022
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/radarr:/config
+      - ${MEDIA_DIR}:/media
+    ports:
+      - "33336:7878"
+    restart: unless-stopped
+    networks:
+      - media
+
+  sonarr: #TV show search agent
+    image: ghcr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=022
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/sonarr:/config
+      - ${MEDIA_DIR}:/media
+    ports:
+      - "33337:8989"
+    restart: unless-stopped
+    networks:
+      - media
+
+  tautulli: #plex monitoring
+    image: ghcr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=002
+      - DEBUG=no
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/tautulli:/config
+    ports:
+      - "33338:8181"
+    restart: unless-stopped
+    networks:
+      - media
+
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun-vpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=${GLUETUN_VPN_PROVIDER}
+      - OPENVPN_USER=${GLUETUN_USER}
+      - OPENVPN_PASSWORD=${GLUETUN_PW}
+#      - SERVER_REGIONS=${GLUETUN_REGION}
+    ports:
+      #the container port(s) should be the ones needed for the container you want to use the gluetun network
+      - 33338:8080
+      - 6881:6881
+      - 6881:6881/udp
+    networks:
+      - media
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/qbittorrent:/config
+      - ${DOWNLOAD_DIRECTORY}:/downloads
+    #    ports:
+    #      - 8080:8080
+    #      - 6881:6881
+    #      - 6881:6881/udp
+    network_mode: service:gluetun
+    restart: unless-stopped
+

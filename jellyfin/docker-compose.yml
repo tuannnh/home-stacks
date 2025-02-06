@@ -2,12 +2,6 @@ name: jellyfin
 services:
   jellyfin:
     container_name: jellyfin
-    deploy:
-      resources:
-        limits:
-          memory: 8192M
-        reservations:
-          memory: "268435456"
     devices:
       - /dev/dri:/dev/dri
     environment:
@@ -17,31 +11,14 @@ services:
     hostname: jellyfin
     image: linuxserver/jellyfin:latest
     ports:
-      - target: 8096
-        published: "11121"
-        protocol: tcp
-      - target: 8920
-        published: "8921"
-        protocol: tcp
-      - target: 7359
-        published: "7359"
-        protocol: tcp
-      - target: 1900
-        published: "1901"
-        protocol: tcp
+      - "11121:8096"
+      - "8921:8920"
+      - "7359:7359"
+      - "1901:1900"
     restart: unless-stopped
     volumes:
-      - type: bind
-        source: /DATA/AppData/jellyfin/config
-        target: /config
-      - type: bind
-        source: /server_data/syncthing
-        target: /Media/Syncthing
-      - type: bind
-        source: /opt/vc/lib
-        target: /opt/vc/lib
-      - type: bind
-        source: /server_data/torrents
-        target: /Media/Torrents
+      - /DATA/AppData/jellyfin/config:/config
+      - /server_data/syncthing:/Media/Syncthing
+      - /server_data/torrents:/Media/Torrents
+      - /opt/vc/lib:/opt/vc/lib
     network_mode: bridge
-    privileged: false

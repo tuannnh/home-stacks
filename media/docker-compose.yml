@@ -159,7 +159,7 @@ services:
       - VPN_SERVICE_PROVIDER=${GLUETUN_VPN_PROVIDER}
       - OPENVPN_USER=${GLUETUN_USER}
       - OPENVPN_PASSWORD=${GLUETUN_PW}
-#      - SERVER_REGIONS=${GLUETUN_REGION}
+      - SERVER_REGIONS=${GLUETUN_REGION}
     ports:
       #the container port(s) should be the ones needed for the container you want to use the gluetun network
       - "33339:8080"

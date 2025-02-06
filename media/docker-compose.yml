@@ -171,9 +171,9 @@ services:
 #      - SERVER_REGIONS=${GLUETUN_REGION}
     ports:
       #the container port(s) should be the ones needed for the container you want to use the gluetun network
-      - 33338:8080
-      - 6881:6881
-      - 6881:6881/udp
+      - "33339:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
     networks:
       - media
 

@@ -18,7 +18,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - "11143:3000"
+      - "11144:3000"
     restart: unless-stopped
     networks:
       - rocketchat

@@ -114,8 +114,7 @@ services:
     ports:
       - "33336:7878"
     restart: unless-stopped
-    networks:
-      - media
+
 
   sonarr: #TV show search agent
     image: ghcr.io/linuxserver/sonarr:latest

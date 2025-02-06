@@ -20,8 +20,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${MEDIA_CONFIG_DIR}/bazarr:/config
-      - ${MEDIA_DIR}/media/movies:/movies #optional
-      - ${MEDIA_DIR}/media/tv:/tv #optional
+      - ${MEDIA_DIR}/movies:/movies #optional
+      - ${MEDIA_DIR}/tv:/tv #optional
     ports:
       - "33331:6767"
     restart: unless-stopped

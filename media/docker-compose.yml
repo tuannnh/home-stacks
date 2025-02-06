@@ -187,6 +187,4 @@ services:
     #      - 6881:6881/udp
     network_mode: service:gluetun
     restart: unless-stopped
-    networks:
-      - vpn
 

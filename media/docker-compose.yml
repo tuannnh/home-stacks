@@ -167,7 +167,6 @@ services:
       - "6881:6881/udp"
     networks:
       - vpn
-      - media
 
   qbittorrent-media:
     image: lscr.io/linuxserver/qbittorrent:latest

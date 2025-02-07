@@ -130,6 +130,18 @@ services:
       - "33337:8989"
     restart: unless-stopped
 
+  notifiarr:
+    container_name: notifiarr
+    hostname: notifiarr
+    image: golift/notifiarr
+    restart: unless-stopped
+    ports:
+      - "33340:5454"
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/notifiarr:/config
+      - /var/run/utmp:/var/run/utmp
+      - /etc/machine-id:/etc/machine-id
+
   tautulli: #plex monitoring
     image: ghcr.io/linuxserver/tautulli:latest
     container_name: tautulli

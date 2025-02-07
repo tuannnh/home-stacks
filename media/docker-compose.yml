@@ -162,8 +162,8 @@ services:
     ports:
       #the container port(s) should be the ones needed for the container you want to use the gluetun network
       - "33339:8080"
-      - "6881:6881"
-      - "6881:6881/udp"
+      - "36881:36881"
+      - "36881:36881/udp"
     networks:
       - vpn
 

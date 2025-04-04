@@ -1,0 +1,15 @@
+name: localstack
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/localstack:/var/lib/localstack
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    restart: unless-stopped
+    network_mode: bridge

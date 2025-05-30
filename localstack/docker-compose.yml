@@ -12,4 +12,3 @@ services:
       - "4566:4566"
       - "4510-4559:4510-4559"
     restart: unless-stopped
-    network_mode: bridge

@@ -5,7 +5,7 @@ services:
     hostname: portainer
     image: portainer/portainer-ce:latest
     labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Portainer/icon.png
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "11112:8000"
       - "11113:9000"

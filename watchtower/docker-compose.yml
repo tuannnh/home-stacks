@@ -1,0 +1,13 @@
+name: watchtower
+services:
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    env_file:
+      - stack.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 3600 --label-enable
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: always

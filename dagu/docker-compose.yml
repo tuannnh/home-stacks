@@ -1,0 +1,14 @@
+name: dagu
+services:
+  dagu:
+    image: ghcr.io/dagu-org/dagu:latest
+    container_name: dagu
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/dagu:/var/lib/dagu
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 11147:8080
+    restart: unless-stopped
+    network_mode: bridge

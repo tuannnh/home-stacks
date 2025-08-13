@@ -8,6 +8,7 @@ services:
     volumes:
       - /DATA/AppData/dagu:/var/lib/dagu
       - /var/run/docker.sock:/var/run/docker.sock
+    user: "0:0"
     ports:
       - 11147:8080
     restart: unless-stopped

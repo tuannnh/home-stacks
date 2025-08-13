@@ -5,7 +5,6 @@ services:
     container_name: speedtest-tracker
     env_file:
       - stack.env
-    user: "0:0"
     ports:
       - 11135:80
     volumes:

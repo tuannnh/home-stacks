@@ -5,7 +5,6 @@ services:
     container_name: samba
     environment:
       - TZ=${TZ}
-    user: "${PUID}:${PGID}"
     env_file:
       - stack.env
     volumes:

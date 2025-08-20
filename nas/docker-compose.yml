@@ -22,8 +22,8 @@ services:
       -n
       -p
     ports:
-      - "445":"445"
-      - "139":"139"
+      - "445:445"
+      - "139:139"
     restart: unless-stopped
 
   nfs:

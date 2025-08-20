@@ -1,0 +1,47 @@
+name: nas
+services:
+  samba:
+    image: dperson/samba:latest
+    container_name: samba
+    environment:
+      - TZ=${TZ}
+    user: "${PUID}:${PGID}"
+    env_file:
+      - stack.env
+    volumes:
+      - ${SHARED_DIR}:/mount/shared:rw
+      - ${MEDIA_DIR}:/mount/media:rw
+      - ${BACKUPS_DIR}:/mount/backups:rw
+      - ${CAMERA_DIR}:/mount/backups:rw
+    command: >
+      -s "Shared;/mount/shared;yes;no;no;all"
+      -s "Media;/mount/media;yes;no;no;all"
+      -s "Backups;/mount/backups;yes;no;no;all"
+      -s "Camera;/mount/camera;yes;no;no;all"
+      -u "${SMB_USER};${SMB_PASS}"
+      -n
+      -p
+    ports:
+      - "445":"445"
+      - "139":"139"
+    restart: unless-stopped
+
+  nfs:
+    image: ditsthenetwork/nfs-server-alpine:latest
+    container_name: nfs
+    privileged: true
+    environment:
+      - SHARED_DIRECTORY=/exports
+      - TZ=${TZ}
+    user: "${PUID}:${PGID}"
+    env_file:
+      - stack.env
+    volumes:
+      - ${NAS_DIR}:/exports:rw
+    ports:
+      - "2049:2049"
+      - "111:111/udp"
+      - "111:111"
+      - "20048:20048/udp"
+      - "20048:20048"
+    restart: unless-stopped

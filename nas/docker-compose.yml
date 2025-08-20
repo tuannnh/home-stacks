@@ -35,7 +35,6 @@ services:
       - READ_ONLY=rw           # or ro
       - SYNC=sync              # or async
       - TZ=${TZ}
-    user: "${PUID}:${PGID}"
     env_file:
       - stack.env
     volumes:

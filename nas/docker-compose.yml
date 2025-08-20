@@ -28,15 +28,21 @@ services:
   nfs:
     image: itsthenetwork/nfs-server-alpine:latest
     container_name: nfs
-    privileged: true
+    privileged: true 
     environment:
       - SHARED_DIRECTORY=/exports
+      - PERMITTED=*            # or 192.168.1.0/24
+      - READ_ONLY=rw           # or ro
+      - SYNC=sync              # or async
       - TZ=${TZ}
     user: "${PUID}:${PGID}"
     env_file:
       - stack.env
     volumes:
       - ${NAS_DIR}:/exports:rw
+      - /lib/modules:/lib/modules:ro
+    security_opt:
+      - apparmor:unconfined 
     ports:
       - "2049:2049"
       - "111:111/udp"

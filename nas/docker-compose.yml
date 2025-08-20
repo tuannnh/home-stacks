@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
 
   nfs:
-    image: ditsthenetwork/nfs-server-alpine:latest
+    image: itsthenetwork/nfs-server-alpine:latest
     container_name: nfs
     privileged: true
     environment:

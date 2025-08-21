@@ -5,8 +5,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     environment:
-      - PGID=1000
-      - PUID=1000
+      - PGID=0
+      - PUID=0
       - TZ=Asia/Ho_Chi_Minh
     hostname: jellyfin
     image: linuxserver/jellyfin:latest
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     volumes:
       - /DATA/AppData/jellyfin/config:/config
-      - /server_data/syncthing:/Media/Syncthing
-      - /server_data/torrents:/Media/Torrents
+      - /srv/data/backups/syncthing:/media/syncthing
+      - /srv/data/backups/pc-torrents:/media/torrents
       - /opt/vc/lib:/opt/vc/lib
     network_mode: bridge

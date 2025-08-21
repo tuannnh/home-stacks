@@ -10,8 +10,8 @@ services:
       - "11112:8000"
       - "11113:9000"
       - "11114:9443"
-    env_file:
-      - stack.env
+    environment:
+      - TRUSTED_ORIGINS=portainer.hungtuan.me
     restart: unless-stopped
     volumes:
       - type: bind

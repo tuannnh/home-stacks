@@ -16,3 +16,21 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # optional, for docker integrations
     restart: unless-stopped
     network_mode: bridge
+
+  homepage-external:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage-external
+    env_file:
+      - stack.env
+    environment:
+      PUID: 1000 # optional, your user id
+      PGID: 987 # optional, your group id
+    ports:
+      - 11110:3000
+    volumes:
+      - /DATA/AppData/homepage-external/config:/app/config # Make sure your local config directory exists
+      - /DATA/AppData/homepage-external/images:/app/public/images
+      - /DATA/AppData/homepage-external/icons:/app/public/icons
+      - /var/run/docker.sock:/var/run/docker.sock # optional, for docker integrations
+    restart: unless-stopped
+    network_mode: bridge

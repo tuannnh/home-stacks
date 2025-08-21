@@ -10,8 +10,6 @@ services:
     ports:
       - 11115:80
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Ho_Chi_Minh
     restart: unless-stopped
     network_mode: bridge

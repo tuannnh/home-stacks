@@ -36,7 +36,7 @@ services:
         source: /DATA/AppData/syncthing/config
         target: /config
       - type: bind
-        source: /server_data/syncthing
+        source: /srv/data/backups/syncthing
         target: /DATA
     network_mode: bridge
     privileged: false

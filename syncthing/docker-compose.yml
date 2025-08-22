@@ -10,8 +10,8 @@ services:
         reservations:
           memory: "268435456"
     environment:
-      - PGID=1000
-      - PUID=1000
+      - PGID=0
+      - PUID=0
       - TZ=Asia/Ho_Chi_Minh
     hostname: syncthing
     image: linuxserver/syncthing:1.27.6

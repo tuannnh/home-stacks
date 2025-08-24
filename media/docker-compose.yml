@@ -77,9 +77,9 @@ services:
       - UMASK=002
       - DEBUG=no
     volumes:
-      - ${MEDIA_CONFIG_DIR}/plex:/config:rw
-      - ${PLEX_MEDIA_DIR}:/data/:rw
-      - /tmp:/transcode:rw
+      - ${MEDIA_CONFIG_DIR}/plex:/config
+      - ${PLEX_MEDIA_DIR}:/data
+      - /tmp:/transcode
     network_mode: host
 
   prowlarr: #indexer manager for Sonarr & Radarr

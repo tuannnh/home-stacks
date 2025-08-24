@@ -71,18 +71,14 @@ services:
     restart: unless-stopped
     logging:
       driver: json-file
+    env_file:
+      - stack.env
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
       - UMASK=002
       - DEBUG=no
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - PLEX_PASS=${PLEX_PASS}
-      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
     volumes:
       - ${MEDIA_CONFIG_DIR}/plex:/config:rw
-      - ${PLEX_MEDIA}:/data/media:rw
+      - ${PLEX_MEDIA_DIR}:/data/:rw
       - /tmp:/transcode:rw
     network_mode: host
 

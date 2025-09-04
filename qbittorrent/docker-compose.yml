@@ -3,20 +3,18 @@ services:
   qbittorrent:
     container_name: qbittorrent
     environment:
-      - PGID=1000
-      - PUID=1000
+      - PGID=0
+      - PUID=0
       - TZ=Asia/Ho_Chi_Minh
       - UMASK=002
     hostname: qbittorrent
     image: hotio/qbittorrent:latest
-    labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/qBittorrent/icon.png
     ports:
       - "11124:8080"
     restart: unless-stopped
     volumes:
       - /DATA/AppData/qbittorrent/config:/config
-      - /server_data/torrents/:/DATA/torrents
-      - /server_data/media/:/DATA/media
+      - /srv/data/backups/pc-torrents/torent-file/:/DATA/torrents
+      - /srv/data/backups/pc-torrents/media:/DATA/media
     network_mode: bridge
     privileged: false

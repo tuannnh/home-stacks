@@ -1,0 +1,23 @@
+name: copyparty
+services:
+  copyparty:
+    image: copyparty/ac:latest
+    container_name: copyparty
+    user: "0:0"
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/copyparty:/cfg:z
+      - /srv/data/shared/copyparty:/w:z
+    ports:
+      - host:3923
+    restart: unless-stopped
+    stop_grace_period: 15s
+    healthcheck:
+      # hide it from logs with "/._" so it matches the default --lf-url filter 
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: 1m
+      timeout: 2s
+      retries: 5
+      start_period: 15s
+    network_mode: bridge

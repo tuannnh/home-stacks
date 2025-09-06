@@ -10,7 +10,7 @@ services:
       - /DATA/AppData/copyparty:/cfg:z
       - /srv/data/shared/copyparty:/w:z
     ports:
-      - host:3923
+      - 11148:3923
     restart: unless-stopped
     stop_grace_period: 15s
     healthcheck:

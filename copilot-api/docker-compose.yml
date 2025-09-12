@@ -1,7 +1,7 @@
 name: stack_name
 services:
   copilot-api:
-    image: tuannnh/copilot-api:latest
+    image: ghcr.io/tuannnh/copilot-api:latest
     container_name: copilot-api
     env_file:
       - stack.env

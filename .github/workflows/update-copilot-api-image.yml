@@ -37,10 +37,10 @@ jobs:
         id: check-updates
         run: |
           # Create necessary directories if they don't exist
-          mkdir -p copilot-api/src
+          mkdir -p copilot-api
           
           # Copy all files from cloned repo to your repo's copilot-api directory
-          cp -r /tmp/copilot-api/* copilot-api/src/
+          cp -r /tmp/copilot-api/* copilot-api/
           
           # Check if there are changes
           if git diff --quiet copilot-api/src/; then
@@ -52,10 +52,11 @@ jobs:
           fi
 
       - name: Build and push Docker image
-        if: steps.check-updates.outputs.has_changes == 'true'
+        # if: steps.check-updates.outputs.has_changes == 'true'
+        if: true
         uses: docker/build-push-action@v5
         with:
-          context: copilot-api/src
+          context: copilot-api
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/copilot-api:latest

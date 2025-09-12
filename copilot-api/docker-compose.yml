@@ -8,6 +8,6 @@ services:
     volumes:
       - /DATA/AppData/copilot-api:/root/.local/share/copilot-api
     ports:
-      - "4141:4141"
+      - "11150:4141"
     restart: unless-stopped
     network_mode: bridge

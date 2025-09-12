@@ -49,8 +49,8 @@ jobs:
           else
             echo "Changes detected"
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo $GH_TOKEN >> $GITHUB_OUTPUT
           fi
+          echo $GH_TOKEN >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         if: steps.check-updates.outputs.has_changes == 'true'

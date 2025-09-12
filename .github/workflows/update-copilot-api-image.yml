@@ -52,8 +52,8 @@ jobs:
           echo $GH_TOKEN >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
-        if: steps.check-updates.outputs.has_changes == 'true'
-        # if: true
+        # if: steps.check-updates.outputs.has_changes == 'true'
+        if: true
         uses: docker/build-push-action@v5
         with:
           context: copilot-api

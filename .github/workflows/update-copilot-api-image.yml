@@ -1,0 +1,71 @@
+name: Update Copilot API
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+  workflow_dispatch:     # Allow manual triggering
+
+jobs:
+  update-and-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # For pushing changes
+      packages: write    # For pushing to GitHub Packages
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clone ericc-ch/copilot-api repository
+        run: |
+          git clone https://github.com/ericc-ch/copilot-api.git /tmp/copilot-api
+          cd /tmp/copilot-api
+          LATEST_COMMIT=$(git rev-parse HEAD)
+          echo "LATEST_COMMIT=$LATEST_COMMIT" >> $GITHUB_ENV
+
+      - name: Check for updates
+        id: check-updates
+        run: |
+          # Create necessary directories if they don't exist
+          mkdir -p copilot-api/src
+          
+          # Copy all files from cloned repo to your repo's copilot-api directory
+          cp -r /tmp/copilot-api/* copilot-api/src/
+          
+          # Check if there are changes
+          if git diff --quiet copilot-api/src/; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push Docker image
+        if: steps.check-updates.outputs.has_changes == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: copilot-api/src
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/copilot-api:latest
+            ghcr.io/${{ github.repository_owner }}/copilot-api:${{ env.LATEST_COMMIT }}
+
+      - name: Commit and push changes
+        if: steps.check-updates.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add copilot-api/src
+          git commit -m "Update copilot-api from ericc-ch/copilot-api (${LATEST_COMMIT})"
+          git push

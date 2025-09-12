@@ -39,7 +39,7 @@ jobs:
           
           # Copy all files from cloned repo to your repo's copilot-api directory exclude the Dockerfile
           rm -rf /tmp/copilot-api/Dockerfile
-          cp -r /tmp/copilot-api/* /copilot-api/copilot-api-src/
+          cp -r /tmp/copilot-api/* ./copilot-api/copilot-api-src/
           
           # Check if there are changes
           if git diff --quiet copilot-api/; then

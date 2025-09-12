@@ -43,12 +43,13 @@ jobs:
           cp -r /tmp/copilot-api/* copilot-api/
           
           # Check if there are changes
-          if git diff --quiet copilot-api/src/; then
+          if git diff --quiet copilot-api/; then
             echo "No changes detected"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo $GH_TOKEN >> $GITHUB_OUTPUT
           fi
 
       - name: Build and push Docker image

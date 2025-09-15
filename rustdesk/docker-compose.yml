@@ -2,7 +2,7 @@ name: rustdesk
 services:
   rustdesk-hbbs:
     image: rustdesk/rustdesk-server:latest
-    container_name: rustdesk-hbbr
+    container_name: rustdesk-hbbs
     command: hbbs
     env_file:
       - stack.env

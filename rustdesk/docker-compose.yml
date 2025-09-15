@@ -18,7 +18,7 @@ services:
     depends_on:
       - rustdesk-hbbr
     restart: unless-stopped
-    network_mode: 
+    networks: 
       - rustdesk
 
   rustdesk-hbbr:
@@ -33,7 +33,7 @@ services:
       - 21117:21117
       - 21119:21119
     restart: unless-stopped
-    network_mode: 
+    networks: 
       - rustdesk
 
 networks:

@@ -2,37 +2,32 @@
   "$schema": "https://raw.githubusercontent.com/Ylianst/MeshCentral/master/meshcentral-config-schema.json",
   "settings": {
     "plugins":{"enabled": false},
-    "_mongoDb": null,
+    "_mongoDb": "mongodb://10.1.1.99:27017/meshcentral",
     "cert": "localhost",
     "_WANonly": true,
     "_LANonly": true,
-    "sessionKey": "OBNRSPQ9JPZF8A16WOY2VHLLV82SFIQYCIC6V7S459J0UCXB",
+    "sessionKey": "null",
+    "sessionTime": 1800,
     "port": 80,
     "_aliasPort": 443,
     "redirPort": 80,
     "_redirAliasPort": 80,
     "AgentPong": 300,
-    "TLSOffload": false,
-    "SelfUpdate": false,
-    "AllowFraming": false,
-    "WebRTC": false,
-    "_ignoreAgentHashCheck": true,
+    "TLSOffload": "127.0.0.1, 10.1.1.99",
+    "no2FactorAuth": true,
+    "trustedProxy": "CloudFlare",
+    "debug": "*",
+    "selfUpdate": false,
+    "WebRTC": true,
+    "_ignoreAgentHashCheck": true
   },
   "domains": {
     "": {
-      "_title": "MyServer",
-      "_title2": "Servername",
-      "minify": true,
-      "NewAccounts": true,
-      "localSessionRecording": false,
-      "_userNameIsEmail": true,
-      "_certUrl": "my.reverse.proxy"
+      "_title": "Tuaniverse",
+      "_title2": "Remote Central",
+      "showModernUIToggle": true,
+      "newAccounts": false,
+      "allowedOrigin": true
     }
-  },
-  "_letsencrypt": {
-    "__comment__": "Requires NodeJS 8.x or better, Go to https://letsdebug.net/ first before>",
-    "_email": "myemail@mydomain.com",
-    "_names": "myserver.mydomain.com",
-    "production": false
   }
 }

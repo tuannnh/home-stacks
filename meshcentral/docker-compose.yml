@@ -5,10 +5,9 @@ services:
     container_name: meshcentral
     restart: unless-stopped 
     image: ghcr.io/ylianst/meshcentral:latest 
-    network_mode: host
+    network_mode: bridge
     ports:
-     - 11151:80 # HTTP
-     - 11152:443
+     - 11153:443
     volumes:
       - /DATA/AppData/meshcentral/data:/opt/meshcentral/meshcentral-data # config.json and other important files live here
       - /DATA/AppData/meshcentral/user_files:/opt/meshcentral/meshcentral-files # where file uploads for users live

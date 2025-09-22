@@ -9,7 +9,7 @@ services:
       - "11151:8000"
     restart: unless-stopped
     networks:
-      - badminton-network
+      - badminton-tracker-network
 
   frontend:
     image: ghcr.io/tuannnh/badminton-tracker-frontend:latest

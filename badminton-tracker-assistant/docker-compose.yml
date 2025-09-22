@@ -2,11 +2,9 @@ name: badminton-tracker-assistant
 services:
   api:
     image: ghcr.io/tuannnh/badminton-tracker-api:latest
-    container_name: container_name
+    container_name: badminton-tracker-api
     env_file:
       - stack.env
-    volumes:
-      - /DATA/AppData/app_name:/data/
     ports:
       - "11151:8000"
     restart: unless-stopped
@@ -15,6 +13,7 @@ services:
 
   frontend:
     image: ghcr.io/tuannnh/badminton-tracker-frontend:latest
+    container_name: badminton-tracker-frontend
     restart: unless-stopped
     ports:
       - "11152:8501"

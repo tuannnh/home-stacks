@@ -1,0 +1,30 @@
+name: badminton-tracker-assistant
+services:
+  api:
+    image: ghcr.io/tuannnh/badminton-tracker-api:latest
+    container_name: container_name
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/app_name:/data/
+    ports:
+      - "11151:8000"
+    restart: unless-stopped
+    networks:
+      - badminton-network
+
+  frontend:
+    image: ghcr.io/tuannnh/badminton-tracker-frontend:latest
+    restart: unless-stopped
+    ports:
+      - "11152:8501"
+    depends_on:
+      - api
+    env_file:
+      - stack.env
+    networks:
+      - badminton-tracker-network
+
+networks:
+  badminton-tracker-network:
+    driver: bridge

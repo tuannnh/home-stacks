@@ -1,7 +1,7 @@
 name: localstack
 services:
   localstack:
-    image: localstack/localstack
+    image: localstack/localstack-pro
     container_name: localstack
     env_file:
       - stack.env
@@ -11,4 +11,5 @@ services:
     ports:
       - "4566:4566"
       - "4510-4559:4510-4559"
+      - "44443:44443"
     restart: unless-stopped

@@ -1,7 +1,7 @@
 services:
 
   n8n:
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:${N8N_IMAGE_VERSION:-latest}
     env_file:
       - stack.env
     networks: [ 'n8n' ]
@@ -16,7 +16,7 @@ services:
       - /DATA/AppData/n8n/shared:/data/shared
 
   task-runners:
-    image: n8nio/runners:latest
+    image: n8nio/runners:${N8N_IMAGE_VERSION:-latest}
     container_name: n8n-runners
     env_file:
       - stack.env

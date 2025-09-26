@@ -21,7 +21,7 @@ services:
     env_file:
       - stack.env
     volumes:
-      - /DATA/AppData/n8n/runners/n8n-task-runners.json:/etc/n8n-task-runners.json
+      - /DATA/AppData/n8n/runners/:/etc/
     depends_on:
       - n8n
     networks: [ 'n8n' ]    

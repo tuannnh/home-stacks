@@ -1,15 +1,4 @@
 services:
-  #  n8n-import:
-  #    <<: *service-n8n
-  #    container_name: n8n-import
-  #    env_file:
-  #      - stack.env
-  #    entrypoint: /bin/sh
-  #    command:
-  #      - "-c"
-  #      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
-  #    volumes:
-  #      - /DATA/AppData/n8n/backup:/backup
 
   n8n:
     image: n8nio/n8n:latest
@@ -25,48 +14,15 @@ services:
       - /DATA/AppData/n8n/storage:/home/node/.n8n
       - /DATA/AppData/n8n/backup:/backup
       - /DATA/AppData/n8n/shared:/data/shared
-  #    depends_on:
-  #      n8n-import:
-  #        condition: service_completed_successfully
 
-  qdrant:
-    image: qdrant/qdrant
-    container_name: qdrant
-    networks: [ 'n8n' ]
-    restart: unless-stopped
-    ports:
-      - 11139:6333
-    volumes:
-      - /DATA/AppData/n8n/qdrant_storage:/qdrant/storage
-
-  ollama-cpu:
-    image: ollama/ollama:latest
-    container_name: ollama
-    networks: [ 'n8n' ]
-    restart: unless-stopped
-#    entrypoint: /bin/sh
-#    command:
-#      - "-c"
-#      - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.2"
-    ports:
-      - 11138:11434
-    volumes:
-      - /DATA/AppData/n8n/ollama_storage:/root/.ollama
-
-
-#  ollama-pull-llama-cpu:
-#    profiles: [ "cpu" ]
-#    image: ollama/ollama:latest
-#    networks: [ 'n8n' ]
-#    container_name: ollama-pull-llama
-#    volumes:
-#      - /DATA/AppData/n8n/ollama_storage:/root/.ollama
-#    entrypoint: /bin/sh
-#    command:
-#      - "-c"
-#      - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.2"
-#    depends_on:
-#      - ollama-cpu
+  task-runners:
+    image: n8nio/runners:latest
+    container_name: n8n-runners
+    env_file:
+      - stack.env
+    depends_on:
+      - n8n
+    networks: [ 'n8n' ]    
 
 networks:
   n8n:

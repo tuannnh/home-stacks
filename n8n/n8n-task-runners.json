@@ -1,0 +1,42 @@
+{
+  "task-runners": [
+    {
+      "runner-type": "javascript",
+      "workdir": "/usr/local/bin",
+      "command": "/usr/local/bin/node",
+      "args": [
+        "--disallow-code-generation-from-strings",
+        "--disable-proto=delete",
+        "/usr/local/lib/node_modules/n8n/node_modules/@n8n/task-runner/dist/start.js"
+      ],
+      "health-check-server-port": "5681",
+      "allowed-env": ["PATH", "GENERIC_TIMEZONE"],
+      "env-overrides": {
+        "N8N_RUNNERS_TASK_TIMEOUT": "80",
+        "N8N_RUNNERS_AUTO_SHUTDOWN_TIMEOUT": "120",
+        "N8N_RUNNERS_MAX_CONCURRENCY": "3",
+        "NODE_FUNCTION_ALLOW_BUILTIN": "crypto",
+        "NODE_FUNCTION_ALLOW_EXTERNAL": "moment",
+        "NODE_OPTIONS": "--max-old-space-size=4096"
+      }
+    },
+    {
+      "runner-type": "python",
+      "workdir": "/usr/local/bin",
+      "command": "/usr/local/bin/python",
+      "args": [
+        "/usr/local/lib/python3.13/site-packages/n8n/task-runner-python/main.py"
+      ],
+      "health-check-server-port": "5682", 
+      "allowed-env": ["PATH", "GENERIC_TIMEZONE"],
+      "env-overrides": {
+        "N8N_RUNNERS_TASK_TIMEOUT": "30",
+        "N8N_RUNNERS_AUTO_SHUTDOWN_TIMEOUT": "30",
+        "N8N_RUNNERS_MAX_CONCURRENCY": "2",
+        "PYTHONPATH": "/opt/runners/task-runner-python",
+        "N8N_RUNNERS_STDLIB_ALLOW": "*",
+        "N8N_RUNNERS_EXTERNAL_ALLOW": "*"
+      }
+    }
+  ]
+}

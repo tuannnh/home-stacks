@@ -20,6 +20,8 @@ services:
     container_name: n8n-runners
     env_file:
       - stack.env
+    volumes:
+      - /DATA/AppData/n8n/runners/n8n-task-runners.json:/etc/n8n-task-runners.json
     depends_on:
       - n8n
     networks: [ 'n8n' ]    

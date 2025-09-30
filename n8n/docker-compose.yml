@@ -16,7 +16,8 @@ services:
       - /DATA/AppData/n8n/shared:/data/shared
 
   task-runners:
-    image: n8nio/runners:${N8N_IMAGE_VERSION:-latest}
+    # image: n8nio/runners:${N8N_IMAGE_VERSION:-latest}
+    image: ghcr.io/tuannnh/home-stacks/custom-n8n-runners:latest
     container_name: n8n-runners
     env_file:
       - stack.env

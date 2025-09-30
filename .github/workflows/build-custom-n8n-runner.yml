@@ -1,0 +1,68 @@
+name: Build and Deploy Custom n8n Runners
+
+on:
+  push:
+    paths:
+      - 'n8n/n8n-task-runners.json'
+      - 'n8n/extras.txt'
+      - '.github/workflows/build-custom-n8n-runners.yml'
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    name: Build and Push Custom n8n Runners Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          path: home-stacks
+
+      - name: Clone n8n Repository
+        uses: actions/checkout@v4
+        with:
+          repository: n8n-io/n8n
+          path: n8n-repo
+
+      - name: Replace Custom Files
+        run: |
+          cp home-stacks/n8n/n8n-task-runners.json n8n-repo/docker/images/runners/
+          cp home-stacks/n8n/extras.txt n8n-repo/docker/images/runners/
+          echo "Custom files replaced successfully"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/custom-n8n-runners
+          tags: |
+            type=raw,value=latest
+            type=sha,format=short
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./n8n-repo
+          file: ./n8n-repo/docker/images/runners/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

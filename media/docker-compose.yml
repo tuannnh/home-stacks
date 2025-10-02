@@ -191,5 +191,7 @@ services:
     #      - 6881:6881
     #      - 6881:6881/udp
     network_mode: service:gluetun
+    depends_on:
+      - gluetun
     restart: unless-stopped
 

@@ -67,6 +67,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add copilot-api/src
+          git add copilot-api/copilot-api-src
           git commit -m "Update copilot-api from ericc-ch/copilot-api (${LATEST_COMMIT})"
           git push

@@ -1,0 +1,13 @@
+name: intellissh
+services:
+  stack_name:
+    image: clusterzx/intellissh:latest
+    container_name: intellissh
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/intellissh:/app/server/data
+    ports:
+      - 11144:3000
+    restart: unless-stopped
+    network_mode: bridge

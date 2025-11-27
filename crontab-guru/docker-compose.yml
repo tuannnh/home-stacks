@@ -4,8 +4,8 @@ services:
     build:
       context: .
       args:
-        DASHBOARD_USERNAME: ${CRONITOR_USERNAME}
-        DASHBOARD_PASSWORD: ${CRONITOR_PASSWORD}
+        CRONITOR_USERNAME: ${CRONITOR_USERNAME}
+        CRONITOR_PASSWORD: ${CRONITOR_PASSWORD}
     container_name: crontab-guru-dashboard
     env_file:
       - stack.env

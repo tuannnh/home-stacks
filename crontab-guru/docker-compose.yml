@@ -2,10 +2,7 @@ name: stack_name
 services:
   crontab-guru:
     build:
-      context: .
-      args:
-        CRONITOR_USERNAME: ${CRONITOR_USERNAME}
-        CRONITOR_PASSWORD: ${CRONITOR_PASSWORD}
+      context: crontab-guru
     container_name: crontab-guru-dashboard
     env_file:
       - stack.env

@@ -12,7 +12,7 @@ RUN curl -sL https://cronitor.io/dl/linux_amd64.tar.gz -o /usr/local/bin/cronito
     chmod +x /usr/local/bin/cronitor
 
 # Configure authentication
-# RUN cronitor configure --dash-username admin --dash-password changeme
+RUN cronitor configure --dash-username admin --dash-password changeme
 
 EXPOSE 9000
 

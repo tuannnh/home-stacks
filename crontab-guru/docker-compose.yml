@@ -1,0 +1,19 @@
+name: stack_name
+services:
+  crontab-guru:
+    build:
+      context: .
+      args:
+        DASHBOARD_USERNAME: ${CRONITOR_USERNAME}
+        DASHBOARD_PASSWORD: ${CRONITOR_PASSWORD}
+    container_name: crontab-guru-dashboard
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/crontab-guru/cronitor:/root/.config/cronitor
+      - /DATA/AppData/crontab-guru/crontabs:/var/spool/cron/crontabs
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 11144:9000
+    restart: unless-stopped
+    network_mode: bridge

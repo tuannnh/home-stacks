@@ -1,8 +1,7 @@
 name: stack_name
 services:
   crontab-guru:
-    build:
-      context: crontab-guru
+    image: ghcr.io/tuannnh/crontab-guru:latest
     container_name: crontab-guru-dashboard
     env_file:
       - stack.env

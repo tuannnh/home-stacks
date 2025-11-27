@@ -1,5 +1,9 @@
 FROM alpine:latest
 
+# Build arguments - MUST be provided during build
+ARG CRONITOR_USERNAME
+ARG CRONITOR_PASSWORD
+
 # Install dependencies
 RUN apk add --no-cache \
     curl \
@@ -12,7 +16,7 @@ RUN curl -sL https://cronitor.io/dl/linux_amd64.tar.gz -o /usr/local/bin/cronito
     chmod +x /usr/local/bin/cronitor
 
 # Configure authentication
-RUN cronitor configure --dash-username admin --dash-password changeme
+RUN cronitor configure --dash-username ${CRONITOR_USERNAME} --dash-password ${CRONITOR_PASSWORD}
 
 EXPOSE 9000
 

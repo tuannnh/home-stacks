@@ -9,20 +9,3 @@ services:
       - 11116:3000
     restart: unless-stopped
     network_mode: bridge
-    depends_on:
-      airtrail-db:
-        condition: service_healthy
-
-  airtrail-db:
-    container_name: airtrail_db
-    image: postgres:16-alpine
-    restart: always
-    env_file:
-      - stack.env
-    volumes:
-      - /DATA/AppData/airtrail:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE_NAME}']
-      interval: 5s
-      timeout: 5s
-      retries: 5

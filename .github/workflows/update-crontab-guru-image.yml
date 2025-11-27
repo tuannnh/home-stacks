@@ -38,10 +38,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Build and push the image
-      - name: Build and push crontab-guru image
+      - name: Build and push crontab-guru image (BuildKit secret)
         uses: docker/build-push-action@v4
         with:
-          context: ./crontab-guru          
+          context: ./crontab-guru
           file: ./crontab-guru/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
@@ -50,3 +50,5 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/crontab-guru:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          secrets: |
+            cronitor_creds=${{ secrets.CRONITOR_CREDS }}

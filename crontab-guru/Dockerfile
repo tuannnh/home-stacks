@@ -1,9 +1,5 @@
 FROM alpine:latest
 
-# Build arguments - MUST be provided during build
-ARG CRONITOR_USERNAME
-ARG CRONITOR_PASSWORD
-
 # Install dependencies
 RUN apk add --no-cache \
     curl \

@@ -1,4 +1,4 @@
-name: stack_name
+name: crontab-guru
 services:
   crontab-guru:
     image: ghcr.io/tuannnh/crontab-guru:latest

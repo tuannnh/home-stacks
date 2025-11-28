@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - 'n8n/n8n-task-runners.json'
-      - 'n8n/extras.txt'
-      - '.github/workflows/build-custom-n8n-runners.yml'
+      - 'n8n/Dockerfile-runners-extends'
+      - '. github/workflows/build-custom-n8n-runners.yml'
   schedule:
     # Run every day at midnight UTC
     - cron: '0 0 * * *'
@@ -34,7 +34,6 @@ jobs:
       - name: Replace Custom Files
         run: |
           cp home-stacks/n8n/n8n-task-runners.json n8n-repo/docker/images/runners/
-          cp home-stacks/n8n/extras.txt n8n-repo/docker/images/runners/
           echo "Custom files replaced successfully"
       
       - name: Setup Node.js
@@ -64,8 +63,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for Docker
-        id: meta
+      - name: Extract metadata for Base Image
+        id: meta-base
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/custom-n8n-runners-base
+          tags: |
+            type=raw,value=latest
+            type=sha,format=short
+
+      - name: Build and Push Base Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./n8n-repo
+          file: ./n8n-repo/docker/images/runners/Dockerfile
+          push: true
+          tags: ${{ steps.meta-base.outputs.tags }}
+          labels: ${{ steps.meta-base.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Extract metadata for Extended Image
+        id: meta-extended
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/custom-n8n-runners
@@ -73,13 +92,13 @@ jobs:
             type=raw,value=latest
             type=sha,format=short
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Extended Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ./n8n-repo
-          file: ./n8n-repo/docker/images/runners/Dockerfile
+          context: ./home-stacks/n8n
+          file: ./home-stacks/n8n/Dockerfile-runners-extends
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps. meta-extended.outputs.tags }}
+          labels: ${{ steps.meta-extended. outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

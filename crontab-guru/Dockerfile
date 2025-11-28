@@ -6,6 +6,7 @@ ARG TARGETARCH
 
 # Install dependencies
 RUN apk add --no-cache \
+    docker-cli \ 
     curl \
     bash \
     ca-certificates \

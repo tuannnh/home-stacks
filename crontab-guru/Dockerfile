@@ -34,20 +34,7 @@ RUN set -eux; \
     chmod +x /usr/local/bin/cronitor; \
     rm -f /tmp/cronitor.tar.gz
 
-# Configure authentication using BuildKit secret (does NOT persist the secret in image layers)
-# The secret file will be mounted at /run/secrets/cronitor_creds during build.
-# The secret content should be "username:password".
-RUN --mount=type=secret,id=cronitor_creds,target=/run/secrets/cronitor_creds \
-    set -e; \
-    CREDS_FILE=/run/secrets/cronitor_creds; \
-    if [ -f "$CREDS_FILE" ]; then \
-      CRONITOR_USERNAME=$(cut -d: -f1 "$CREDS_FILE"); \
-      CRONITOR_PASSWORD=$(cut -d: -f2- "$CREDS_FILE"); \
-      echo "Configuring cronitor CLI"; \
-      /usr/local/bin/cronitor configure --dash-username "$CRONITOR_USERNAME" --dash-password "$CRONITOR_PASSWORD"; \
-    else \
-      echo "No cronitor secret provided; skipping configure"; \
-    fi
+
 
 EXPOSE 9000
 

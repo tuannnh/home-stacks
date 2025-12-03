@@ -34,8 +34,10 @@ RUN set -eux; \
     chmod +x /usr/local/bin/cronitor; \
     rm -f /tmp/cronitor.tar.gz
 
+# Export executable to PATH
+RUN ln -s /usr/local/bin/cronitor /usr/bin/cronitor
 
 
 EXPOSE 9000
 
-CMD ["/usr/local/bin/cronitor", "dash", "--port", "9000"]
+CMD ["cronitor", "dash", "--port", "9000"]

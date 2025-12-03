@@ -7,8 +7,9 @@ services:
       - stack.env
     volumes:
       - /DATA/AppData/crontab-guru/cronitor/config/:/etc/cronitor/
-      - /DATA/AppData/crontab-guru/cronitor:/root/.config/cronitor
-      - /DATA/AppData/crontab-guru/crontabs:/var/spool/cron/crontabs
+      - /etc/cron.d:/etc/cron.d
+      - /var/spool/cron:/var/spool/cron
+      - /etc/crontab:/etc/crontab
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 11144:9000

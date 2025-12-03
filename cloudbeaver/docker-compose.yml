@@ -1,0 +1,13 @@
+name: cloudbeaver
+services:
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/cloudbeaver:/opt/cloudbeaver/workspace
+    ports:
+      - 11118:8978 
+    restart: unless-stopped
+    network_mode: bridge

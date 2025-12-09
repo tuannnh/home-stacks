@@ -7,7 +7,5 @@ services:
       - stack.env
     volumes:
       - /DATA/AppData/homebridge:/homebridge
-    ports:
-      - 11145:8581
     restart: unless-stopped
-    network_mode: bridge
+    network_mode: host

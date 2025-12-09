@@ -1,0 +1,11 @@
+name: badminton-tracker-vtc
+services:
+  badminton-tracker-vtc:
+    image: ghcr.io/tuannnh/badminton_tracker:latest
+    container_name: badminton-tracker-vtc
+    env_file:
+      - stack.env
+    ports:
+      - "11152:5000"
+    restart: unless-stopped
+    network_mode: bridge

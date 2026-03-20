@@ -1,7 +1,7 @@
 name: ebook-crawler
 services:
   ebook-crawler:
-    image: your-registry/ebook-crawler:latest
+    image: ghcr.io/your-user/ebook-crawler:latest
     container_name: ebook-crawler
     env_file:
       - stack.env

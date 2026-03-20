@@ -1,0 +1,13 @@
+name: ebook-crawler
+services:
+  ebook-crawler:
+    image: image_url
+    container_name: ebook-crawler
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/ebook-crawler:/data/
+    ports:
+      - host:local
+    restart: unless-stopped
+    network_mode: bridge

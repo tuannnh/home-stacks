@@ -1,0 +1,13 @@
+name: glance
+services:
+  glance:
+    image: glanceapp/glance
+    container_name: glance
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/glance/config:/app/config
+    ports:
+      - 11333:8080
+    restart: unless-stopped
+    network_mode: bridge

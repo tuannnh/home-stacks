@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     ports:
       # DNS - bound to LAN IP only to avoid conflict with libvirt dnsmasq
-      - "0.0.0.0:53:53/tcp"
-      - "0.0.0.0:53:53/udp"
+      - "10.1.1.99:53:53/tcp"
+      - "10.1.1.99:53:53/udp"
       # Admin panel (initial setup wizard on 3000, then 80 internally)
       - "11152:80/tcp"
       - "11153:3000/tcp"

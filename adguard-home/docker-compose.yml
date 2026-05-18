@@ -1,0 +1,23 @@
+name: adguardhome
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome:latest
+    env_file:
+      - stack.env
+    restart: unless-stopped
+    ports:
+      # DNS - bound to LAN IP only to avoid conflict with libvirt dnsmasq
+      - "0.0.0.0:53:53/tcp"
+      - "0.0.0.0:53:53/udp"
+      # Admin panel (initial setup wizard on 3000, then 80 internally)
+      - "11152:80/tcp"
+      - "11153:3000/tcp"
+      # DNS-over-TLS (optional, remove if not needed)
+    #   - "853:853/tcp"
+    volumes:
+      - /DATA/AppData/adguardhome/conf:/opt/adguardhome/conf
+      - /DATA/AppData/adguardhome/work:/opt/adguardhome/work
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    network_mode: bridge

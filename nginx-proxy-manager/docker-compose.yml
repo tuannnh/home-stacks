@@ -12,7 +12,7 @@ services:
       - /DATA/AppData/nginxproxymanager/etc/letsencrypt:/etc/letsencrypt
     network_mode: host
     privileged: false
-  dns:
-    - 10.1.1.99
-    - 1.1.1.1
-    - 8.8.8.8
+    dns:
+      - 10.1.1.99
+      - 1.1.1.1
+      - 8.8.8.8

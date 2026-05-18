@@ -1,30 +1,15 @@
 name: trilium
 services:
   trilium:
-    cpu_shares: 90
-    command: []
+    image: triliumnext/trilium:latest
     container_name: trilium
-    deploy:
-      resources:
-        limits:
-          memory: 32013M
-        reservations:
-          memory: "268435456"
-    hostname: trilium
-    image: zadam/trilium:0.63-latest
-    labels:
-      icon: https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Trilium/icon.png
-    ports:
-      - target: 8080
-        published: "11126"
-        protocol: tcp
-    restart: unless-stopped
+    env_file:
+      - stack.env
     volumes:
-      - type: bind
-        source: /DATA/AppData/trilium
-        target: /home/node/trilium-data
-    devices: []
-    cap_add: []
-    environment: []
+      - /DATA/AppData/trilium:/home/node/trilium-data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 11126:8080
+    restart: unless-stopped
     network_mode: bridge
-    privileged: false

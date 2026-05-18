@@ -10,8 +10,6 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      postgres:
-        condition: service_healthy
       affine_migration:
         condition: service_completed_successfully
       indexer:
@@ -45,8 +43,6 @@ services:
       - AFFINE_INDEXER_ENABLED=true
       - AFFINE_INDEXER_SEARCH_ENDPOINT=http://indexer:9308
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
     networks:

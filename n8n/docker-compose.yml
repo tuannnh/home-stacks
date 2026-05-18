@@ -1,7 +1,7 @@
 services:
 
   n8n:
-    image: n8nio/n8n:${N8N_IMAGE_VERSION:-latest}
+    image: docker.n8n.io/n8nio/n8n:${N8N_IMAGE_VERSION:-latest}
     env_file:
       - stack.env
     networks: [ 'n8n' ]

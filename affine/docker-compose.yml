@@ -65,29 +65,29 @@ services:
       - affine_network
 
   indexer:
-      image: manticoresearch/manticore:${MANTICORE_VERSION:-10.1.0}
-      container_name: affine_indexer
-      env_file:
-        - stack.env
-      volumes:
-        - ${MANTICORE_DATA_LOCATION}:/var/lib/manticore
-      ulimits:
-        nproc: 65535
-        nofile:
-          soft: 65535
-          hard: 65535
-        memlock:
-          soft: -1
-          hard: -1
-      healthcheck:
-        test:
-          ['CMD', 'wget', '-O-', 'http://127.0.0.1:9308']
-        interval: 10s
-        timeout: 5s
-        retries: 5
-      restart: unless-stopped
-      networks:
-        - affine_network
+    image: manticoresearch/manticore:${MANTICORE_VERSION:-10.1.0}
+    container_name: affine_indexer
+    env_file:
+      - stack.env
+    volumes:
+      - ${MANTICORE_DATA_LOCATION}:/var/lib/manticore
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        ['CMD', 'wget', '-O-', 'http://127.0.0.1:9308']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - affine_network
 
 networks:
   affine_network:

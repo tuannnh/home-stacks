@@ -14,6 +14,8 @@ services:
   bazarr:
     image: ghcr.io/linuxserver/bazarr:latest
     container_name: bazarr
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -28,6 +30,8 @@ services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
+    env_file:
+      - stack.env
     volumes:
       - ${MEDIA_CONFIG_DIR}/lidarr:/config
       - ${MEDIA_DIR}:/media
@@ -41,6 +45,8 @@ services:
   nzbget: #usenet download agent
     image: ghcr.io/linuxserver/nzbget:latest
     container_name: nzbget
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -55,6 +61,8 @@ services:
   seerr: #media requesting tool
     image: ghcr.io/seerr-team/seerr:latest
     container_name: seerr
+    env_file:
+      - stack.env
     init: true
     environment:
       - PUID=${PUID}
@@ -92,6 +100,8 @@ services:
   prowlarr: #indexer manager for Sonarr & Radarr
     image: ghcr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -121,6 +131,8 @@ services:
   sonarr: #TV show search agent
     image: ghcr.io/linuxserver/sonarr:latest
     container_name: sonarr
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -138,6 +150,8 @@ services:
     hostname: notifiarr
     image: golift/notifiarr:latest
     restart: unless-stopped
+    env_file:
+      - stack.env
     ports:
       - "33340:5454"
     volumes:
@@ -148,6 +162,8 @@ services:
   tautulli: #plex monitoring
     image: ghcr.io/linuxserver/tautulli:latest
     container_name: tautulli
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -163,6 +179,8 @@ services:
   gluetun:
     image: qmcgaw/gluetun:latest
     container_name: gluetun-vpn
+    env_file:
+      - stack.env
     cap_add:
       - NET_ADMIN
     devices:
@@ -184,9 +202,26 @@ services:
     networks:
       - vpn
 
+  kometa: # Plex Meta Manager (rebranded to Kometa) - automates Plex collections, overlays & metadata
+    image: kometateam/kometa:latest
+    container_name: kometa
+    env_file:
+      - stack.env
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - KOMETA_TIME=03:00        # Daily run at 3 AM; use comma-separated times for multiple runs
+      - KOMETA_CONFIG=/config/config.yml
+    volumes:
+      - ${MEDIA_CONFIG_DIR}/kometa:/config
+    restart: unless-stopped
+
   qbittorrent-media:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent-media
+    env_file:
+      - stack.env
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

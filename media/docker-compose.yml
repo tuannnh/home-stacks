@@ -189,9 +189,9 @@ services:
     networks:
       - vpn
 
-  watchtower: # Auto-updates containers when upstream images change
+  watchtower-media: # Auto-updates containers when upstream images change
     image: containrrr/watchtower:latest
-    container_name: watchtower
+    container_name: watchtower-media
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

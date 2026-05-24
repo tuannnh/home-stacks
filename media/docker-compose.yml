@@ -228,8 +228,8 @@ services:
       - ${MEDIA_DIR}/torrents:/media/torrents
     ports:
       - 33339:8080
-      - 33340:6881
-      - 33341:6881/udp
+      - 36881:6881
+      - 36881:6881/udp
     # depends_on:
     #   gluetun:
     #     condition: service_healthy

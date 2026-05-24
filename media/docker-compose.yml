@@ -226,10 +226,10 @@ services:
     volumes:
       - ${MEDIA_CONFIG_DIR}/qbittorrent:/config
       - ${MEDIA_DIR}/torrents:/media/torrents
-       ports:
-         - 33339:8080
-         - 33340:6881
-         - 33341:6881/udp
+    ports:
+      - 33339:8080
+      - 33340:6881
+      - 33341:6881/udp
     # depends_on:
     #   gluetun:
     #     condition: service_healthy

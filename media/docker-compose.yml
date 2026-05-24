@@ -165,29 +165,29 @@ services:
       - "33338:8181"
     restart: unless-stopped
 
-  gluetun:
-    image: qmcgaw/gluetun:latest
-    container_name: gluetun-vpn
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    volumes:
-      - ${MEDIA_CONFIG_DIR}/gluetun:/gluetun
-    environment:
-      - VPN_SERVICE_PROVIDER=${GLUETUN_VPN_PROVIDER}
-      - OPENVPN_USER=${GLUETUN_USER}
-      - OPENVPN_PASSWORD=${GLUETUN_PW}
-      - SERVER_REGIONS=${GLUETUN_REGION}
-      - DOT=off
-      - DNS_ADDRESS=8.8.8.8
-    ports:
-      #the container port(s) should be the ones needed for the container you want to use the gluetun network
-      - "33339:8080"
-      - "36881:36881"
-      - "36881:36881/udp"
-    networks:
-      - vpn
+  # gluetun:
+  #   image: qmcgaw/gluetun:latest
+  #   container_name: gluetun-vpn
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   volumes:
+  #     - ${MEDIA_CONFIG_DIR}/gluetun:/gluetun
+  #   environment:
+  #     - VPN_SERVICE_PROVIDER=${GLUETUN_VPN_PROVIDER}
+  #     - OPENVPN_USER=${GLUETUN_USER}
+  #     - OPENVPN_PASSWORD=${GLUETUN_PW}
+  #     - SERVER_REGIONS=${GLUETUN_REGION}
+  #     - DOT=off
+  #     - DNS_ADDRESS=8.8.8.8
+  #   ports:
+  #     #the container port(s) should be the ones needed for the container you want to use the gluetun network
+  #     - "33339:8080"
+  #     - "36881:36881"
+  #     - "36881:36881/udp"
+  #   networks:
+  #     - vpn
 
   watchtower-media: # Auto-updates containers when upstream images change
     image: containrrr/watchtower:latest
@@ -226,12 +226,11 @@ services:
     volumes:
       - ${MEDIA_CONFIG_DIR}/qbittorrent:/config
       - ${MEDIA_DIR}/torrents:/media/torrents
-    #    ports:
-    #      - 8080:8080
-    #      - 6881:6881
-    #      - 6881:6881/udp
-    network_mode: service:gluetun
-    depends_on:
-      gluetun:
-        condition: service_healthy
+       ports:
+         - 33339:8080
+         - 33340:6881
+         - 33341:6881/udp
+    # depends_on:
+    #   gluetun:
+    #     condition: service_healthy
     restart: unless-stopped

@@ -1,0 +1,13 @@
+name: 9router
+services:
+  9router:
+    image: decolua/9router:${9ROUTER_VERSION:-latest}
+    container_name: 9router
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/9router/data:/data
+    ports:
+      - "11154:20128"
+    restart: unless-stopped
+    network_mode: bridge

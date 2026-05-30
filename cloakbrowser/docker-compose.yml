@@ -1,0 +1,48 @@
+name: cloakbrowser
+services:
+
+  # Profile manager UI — create/manage profiles with unique fingerprints, noVNC viewer
+  cloakbrowser-manager:
+    image: cloakhq/cloakbrowser-manager:${MANAGER_VERSION:-latest}
+    container_name: cloakbrowser-manager
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/cloakbrowser/profiles:/data
+    ports:
+      - "11155:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/status"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - cloakbrowser
+
+  # Standalone CDP server — persistent stealth browser for direct Playwright/Puppeteer connections
+  cloakbrowser:
+    image: cloakhq/cloakbrowser:${CLOAKBROWSER_VERSION:-latest}
+    container_name: cloakbrowser
+    command: cloakserve
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/cloakbrowser/cache:/root/.cloakbrowser
+    ports:
+      - "11156:9222"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9222/json/version"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - cloakbrowser
+
+networks:
+  cloakbrowser:
+    name: cloakbrowser
+    driver: bridge

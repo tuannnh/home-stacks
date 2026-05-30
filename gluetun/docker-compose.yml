@@ -31,4 +31,4 @@ services:
 networks:
   vpn:
     name: vpn
-    driver: bridge
+    external: true

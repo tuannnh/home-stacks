@@ -1,7 +1,7 @@
 name: 9router
 services:
   9router:
-    image: decolua/9router:${9ROUTER_VERSION:-latest}
+    image: decolua/9router:${NINEROUTER_VERSION:-latest}
     container_name: 9router
     env_file:
       - stack.env

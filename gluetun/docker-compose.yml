@@ -1,0 +1,34 @@
+name: gluetun
+services:
+  gluetun:
+    image: qmcgaw/gluetun:${GLUETUN_VERSION:-latest}
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/gluetun:/gluetun
+    ports:
+      # HTTP proxy — point any app's HTTP proxy setting here
+      - "11157:8888"
+      # SOCKS5 proxy
+      - "11158:1080"
+      # Control API — change region/server without restarting the stack
+      - "11159:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/gluetun-entrypoint", "healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - vpn
+
+networks:
+  vpn:
+    name: vpn
+    driver: bridge

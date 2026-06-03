@@ -6,7 +6,7 @@ services:
     env_file:
       - stack.env
     volumes:
-      - /DATA/AppData/9router/data:/data
+      - /DATA/AppData/9router/data:/app/data
     ports:
       - "11154:20128"
     restart: unless-stopped

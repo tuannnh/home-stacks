@@ -1,0 +1,21 @@
+name: copytele
+services:
+  copytele:
+    image: ghcr.io/tuannnh/copytele:latest
+    container_name: copytele
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/copytele:/data
+    ports:
+      - 11117:3923
+    restart: unless-stopped
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    # override the default copyparty flags here if desired, e.g. to add auth:
+    # command: ["-e2dsa", "-e2ts", "--dedup", "-a", "me:hunter2", "-v", "/mnt/tgfs:/:r,me:rwmda,me"]
+    network_mode: bridge

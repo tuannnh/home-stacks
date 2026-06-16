@@ -1,0 +1,11 @@
+name: music_downloader
+services:
+  music_downloader:
+    image: ghcr.io/tuannnh/music_downloader:latest
+    container_name: music_downloader
+    env_file:
+      - stack.env
+    ports:
+      - 11118:8000
+    restart: unless-stopped
+    network_mode: bridge

@@ -6,6 +6,6 @@ services:
     env_file:
       - stack.env
     ports:
-      - 11118:8000
+      - 11118:8080
     restart: unless-stopped
     network_mode: bridge

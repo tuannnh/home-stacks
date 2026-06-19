@@ -14,6 +14,9 @@ services:
       - /DATA/AppData/calibre/library:/calibre-library
       # Optional: Calibre plugins (also requires customize.py.json in the config volume)
       - /DATA/AppData/calibre/plugins:/config/.config/calibre/plugins
+      # Gmail OAuth2 creds: CWA reads gmail.json from its app root (NOT /config), so
+      # mount the persistent file there to survive image updates. Source must exist first.
+      - /DATA/AppData/calibre/config/gmail.json:/app/calibre-web-automated/gmail.json
     ports:
       - "11143:8083"
     restart: unless-stopped

@@ -30,6 +30,7 @@ services:
       - stack.env
     volumes:
       - /DATA/AppData/cloakbrowser/cache:/root/.cloakbrowser
+      - /DATA/AppData/cloakbrowser/cdp-profile:/data
     ports:
       - "11156:9222"
     restart: unless-stopped

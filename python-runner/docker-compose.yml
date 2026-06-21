@@ -1,0 +1,28 @@
+name: python-runner
+services:
+  python-runner:
+    image: ghcr.io/astral-sh/uv:${PYTHON_RUNNER_TAG:-python3.12-bookworm-slim}
+    container_name: python-runner
+    env_file:
+      - stack.env
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - UV_PROJECT_ENVIRONMENT=/data/.venv   # keep the venv on the volume so deps survive restarts
+      - UV_LINK_MODE=copy
+    working_dir: /data
+    volumes:
+      # pyproject.toml (deps), scripts/, and the uv .venv all live here — editable from Portainer.
+      - /DATA/AppData/python-runner:/data
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        mkdir -p /data/scripts
+        # Seed an editable project file on first run (defines the deps uv installs).
+        [ -f /data/pyproject.toml ] || printf '[project]\nname = "n8n-python-runner-scripts"\nversion = "0.1.0"\nrequires-python = ">=3.12"\ndependencies = ["requests","httpx","numpy","pandas","beautifulsoup4","pymongo","websockets"]\n\n[tool.uv]\npackage = false\n' > /data/pyproject.toml
+        echo "[python-runner] syncing deps with uv (first run may take a while)..."
+        uv sync --project /data || echo "[python-runner] uv sync failed — check /data/pyproject.toml"
+        echo "[python-runner] ready. Exec in and run:  uv run python scripts/<file>.py"
+        exec tail -f /dev/null
+    restart: unless-stopped
+    network_mode: bridge

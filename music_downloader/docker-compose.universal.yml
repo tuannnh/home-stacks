@@ -14,7 +14,7 @@ services:
     # caps large uploads. Base ends in source/ → files land in
     # source/<platform>/<videos|photos>/.
     environment:
-      COPYTELE_UPLOAD_URL: "${COPYTELE_UPLOAD_URL:-http://copytele:3923/source/}"
+      COPYTELE_UPLOAD_URL: "${COPYTELE_UPLOAD_URL:-http://10.1.1.99:11117/source/}"
       COPYTELE_PW: "${COPYTELE_PW:-}"
       OVERWRITE: "${OVERWRITE:-false}"
       COOKIES_DIR: "/cookies"

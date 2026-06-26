@@ -18,6 +18,11 @@ services:
       COPYTELE_PW: "${COPYTELE_PW:-}"
       OVERWRITE: "${OVERWRITE:-false}"
       COOKIES_DIR: "/cookies"
+      # Instagram/Facebook need a logged-in session cookie even for public
+      # profiles. base64 of a cookies.txt, injected from the Portainer stack env.
+      INSTAGRAM_COOKIES_B64: "${INSTAGRAM_COOKIES_B64:-}"
+      FACEBOOK_COOKIES_B64: "${FACEBOOK_COOKIES_B64:-}"
+      TIKTOK_COOKIES_B64: "${TIKTOK_COOKIES_B64:-}"
     # Cookies are OPTIONAL — public profiles/posts download anonymously. Only if a
     # PRIVATE / login-walled item fails, create ./cookies/ with per-platform files
     # (instagram.txt, facebook.txt, tiktok.txt) and uncomment the mount below.

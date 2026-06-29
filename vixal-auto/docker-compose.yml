@@ -1,0 +1,13 @@
+name: vixal_auto
+services:
+  vixal-auto:
+    image: ghcr.io/tuannnh/vixal_auto:latest
+    container_name: vixal-auto
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/vixal-auto/session/vixal_auto.session:/session/vixal_auto.session
+    ports:
+      - 11120:8090
+    restart: unless-stopped
+    network_mode: bridge

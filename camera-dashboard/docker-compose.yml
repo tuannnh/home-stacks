@@ -15,8 +15,7 @@ services:
       - ./go2rtc-entrypoint.sh:/entrypoint.sh:ro
 
   dashboard:
-    # Prebuilt image from GitHub Actions (GHCR). `build: .` lets you also build
-    # locally with `docker compose up --build` without pulling.
+    # Prebuilt image from GitHub Actions (GHCR).
     image: ghcr.io/tuannnh/camera-dashboard:latest
     container_name: camera-dashboard
     restart: unless-stopped
@@ -24,6 +23,10 @@ services:
       - stack.env
     ports:
       - "11160:80"
+    # Lets the dashboard's nginx reach the host-network go2rtc at
+    # host.docker.internal:1984 to proxy /api/* (reverse-proxy single-origin fix).
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - go2rtc
     network_mode: bridge

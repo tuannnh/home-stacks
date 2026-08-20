@@ -1,0 +1,21 @@
+name: ruview
+services:
+  ruview:
+    image: ruvnet/wifi-densepose:${RUVIEW_VERSION:-latest}
+    container_name: ruview
+    env_file:
+      - stack.env
+    volumes:
+      # CSI recordings, the trained adaptive model and the browser session
+      # secret all live here. Losing it means re-recording training data.
+      - /DATA/AppData/ruview/data:/app/data
+    ports:
+      # Web UI + REST API. The UI derives its /ws/sensing WebSocket URL from
+      # its own origin for any non-default port, so 3001 need not be published.
+      - 11161:3000
+      # CSI ingest from the ESP32-S3 nodes. Fixed at 5005 because that is the
+      # firmware default written into each node's NVS by
+      # `provision.py --target-port`; changing it means re-provisioning nodes.
+      - 5005:5005/udp
+    restart: unless-stopped
+    network_mode: bridge

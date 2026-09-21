@@ -8,7 +8,7 @@ services:
       - TZ=Asia/Ho_Chi_Minh
       - UMASK=002
     hostname: qbittorrent
-    image: hotio/qbittorrent:latest
+    image: ghcr.io/hotio/qbittorrent:latest
     ports:
       - "11124:8080"
     restart: unless-stopped

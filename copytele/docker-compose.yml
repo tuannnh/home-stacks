@@ -1,7 +1,7 @@
 name: copytele
 services:
   copytele:
-    image: ghcr.io/tuannnh/copytele:latest
+    image: ghcr.io/tuannnh/copytele:claude-intelligent-johnson-2kjbnh
     container_name: copytele
     env_file:
       - stack.env

@@ -16,6 +16,7 @@ services:
       - SYS_ADMIN
     security_opt:
       - apparmor:unconfined
+    command: ["-e2dsa", "-e2ts", "--dedup", "--xff-src", "lan", "--rproxy", "-2"]
     # override the default copyparty flags here if desired, e.g. to add auth:
     # command: ["-e2dsa", "-e2ts", "--dedup", "-a", "me:hunter2", "-v", "/mnt/tgfs:/:r,me:rwmda,me"]
     network_mode: bridge

@@ -1,0 +1,17 @@
+name: gods-eye-view
+services:
+  gods-eye-view:
+    image: ghcr.io/tuannnh/gods-eye-view:${GEV_IMAGE_VERSION:-latest}
+    # Fallback for the first deploy, before the GHCR image has been published.
+    build:
+      context: .
+    container_name: gods-eye-view
+    env_file:
+      - stack.env
+    volumes:
+      - /DATA/AppData/gods-eye-view/cache:/app/.gev-cache
+      - /DATA/AppData/gods-eye-view/logs:/app/.gev-logs
+    ports:
+      - "11162:4173"
+    restart: unless-stopped
+    network_mode: bridge

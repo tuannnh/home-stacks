@@ -10,8 +10,8 @@ services:
       # SQLite history (quizbot.db) and stored captures (captures/*.jpg).
       - /DATA/AppData/quizbot:/data
     ports:
-      # Dashboard + API. Agents post to http://10.1.1.99:11162/api/capture.
-      - "11162:8765"
+      # Dashboard + API. Agents post to http://10.1.1.99:11138/api/capture.
+      - "11138:8765"
     labels:
       # Pick up each new image pushed by the quizbot repo's CI.
       - "com.centurylinklabs.watchtower.enable=true"

@@ -1,0 +1,19 @@
+name: quizbot
+services:
+  quizbot:
+    # Built by github.com/tuannnh/quizbot (.github/workflows/docker.yml), multi-arch.
+    image: ghcr.io/tuannnh/quizbot:${QUIZBOT_IMAGE_VERSION:-latest}
+    container_name: quizbot
+    env_file:
+      - stack.env
+    volumes:
+      # SQLite history (quizbot.db) and stored captures (captures/*.jpg).
+      - /DATA/AppData/quizbot:/data
+    ports:
+      # Dashboard + API. Agents post to http://10.1.1.99:11162/api/capture.
+      - "11162:8765"
+    labels:
+      # Pick up each new image pushed by the quizbot repo's CI.
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    network_mode: bridge

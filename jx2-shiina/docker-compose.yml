@@ -1,0 +1,26 @@
+name: jx2-shiina
+services:
+  jx2-shiina:
+    # Võ Lâm 2 (JX2) 2021 Shiina offline server, built by github.com/tuannnh/jx2-shiina-docker.
+    # Private GHCR package: Portainer needs a ghcr.io registry login (token with read:packages).
+    image: ghcr.io/tuannnh/jx2-shiina-docker:${JX2_IMAGE_VERSION:-latest}
+    container_name: jx2-shiina
+    env_file:
+      - stack.env
+    volumes:
+      # MariaDB data (accounts, characters). Seeded with the original game DB on first start.
+      - /DATA/AppData/jx2-shiina/mysql:/var/lib/mysql
+    ports:
+      # 32489 and 6666 are fixed by the game: the client logs in on 32489 and the GameServer
+      # tells clients to connect on 6666, so they can't move into the 111xx range.
+      - "32489:32489"   # Bishop - client login
+      - "6666:6666"     # GameServer
+      - "11139:80"      # account sign-up site (/register.php) + phpMyAdmin (/data/)
+    ulimits:
+      core: 0
+      nofile: 65535
+    labels:
+      # Only update when redeployed: an automatic restart would kick players out mid-game.
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    network_mode: bridge

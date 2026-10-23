@@ -1,14 +1,39 @@
 name: jx2-shiina
 services:
+  jx2-shiina:
+    # Võ Lâm 2 (JX2) 2021 Shiina offline server, built by github.com/tuannnh/jx2-shiina-docker.
+    # Private GHCR package: Portainer needs a ghcr.io registry login (token with read:packages).
+    image: ghcr.io/tuannnh/jx2-shiina-docker:${JX2_IMAGE_VERSION:-latest}
+    container_name: jx2-shiina
+    hostname: jx2-shiina
+    env_file:
+      - stack.env
+    volumes:
+      # MariaDB data (accounts, characters). Seeded with the original game DB on first start.
+      - /DATA/AppData/jx2-shiina/mysql:/var/lib/mysql
+    ports:
+      # Sign-up site (/register.php) + phpMyAdmin (/data/) on the LAN too. The game ports
+      # (32489, 6666) aren't published: clients must use the Tailscale IP, which the
+      # GameServer advertises (EXTERNAL_IP=tailscale).
+      - "11139:80"
+    ulimits:
+      core: 0
+      nofile: 65535
+    labels:
+      # Only update when redeployed: an automatic restart would kick players out mid-game.
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    network_mode: bridge
+
   jx2-shiina-tailscale:
     # Players reach the game over Tailscale: the GameServer hands clients a raw IP for port 6666,
-    # so it can't sit behind a hostname / Cloudflare Tunnel. The game shares this container's
-    # network, so all its ports are on this node's Tailscale IP.
+    # so it can't sit behind a hostname / Cloudflare Tunnel. This sidecar joins the game's network
+    # (not the other way round, so a Tailscale restart doesn't cut the game off) and puts all the
+    # game's ports on this node's Tailscale IP.
     # First start without TS_AUTHKEY: open the login link printed in this container's logs once;
     # the node state is kept in /DATA/AppData/jx2-shiina/tailscale.
     image: tailscale/tailscale:${TAILSCALE_IMAGE_VERSION:-v1.102.5}
     container_name: jx2-shiina-tailscale
-    hostname: jx2-shiina
     env_file:
       - stack.env
     environment:
@@ -22,33 +47,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - NET_ADMIN
-    ports:
-      # Sign-up site (/register.php) + phpMyAdmin (/data/) on the LAN too. The game ports
-      # (32489, 6666) aren't published: clients must use the Tailscale IP, which the
-      # GameServer advertises.
-      - "11139:80"
-    restart: unless-stopped
-    network_mode: bridge
-
-  jx2-shiina:
-    # Võ Lâm 2 (JX2) 2021 Shiina offline server, built by github.com/tuannnh/jx2-shiina-docker.
-    # Private GHCR package: Portainer needs a ghcr.io registry login (token with read:packages).
-    image: ghcr.io/tuannnh/jx2-shiina-docker:${JX2_IMAGE_VERSION:-latest}
-    container_name: jx2-shiina
-    env_file:
-      - stack.env
-    volumes:
-      # MariaDB data (accounts, characters). Seeded with the original game DB on first start.
-      - /DATA/AppData/jx2-shiina/mysql:/var/lib/mysql
-    # Shares the Tailscale container's network: with EXTERNAL_IP=tailscale the entrypoint waits
-    # for tailscale0 and advertises its IP. If the sidecar is recreated, restart this one too.
-    network_mode: "service:jx2-shiina-tailscale"
+    # If the game container is recreated, restart this one too so it rejoins the new network.
+    network_mode: "service:jx2-shiina"
     depends_on:
-      - jx2-shiina-tailscale
-    ulimits:
-      core: 0
-      nofile: 65535
-    labels:
-      # Only update when redeployed: an automatic restart would kick players out mid-game.
-      - "com.centurylinklabs.watchtower.enable=false"
+      - jx2-shiina
     restart: unless-stopped

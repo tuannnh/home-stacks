@@ -1,5 +1,35 @@
 name: jx2-shiina
 services:
+  jx2-shiina-tailscale:
+    # Players reach the game over Tailscale: the GameServer hands clients a raw IP for port 6666,
+    # so it can't sit behind a hostname / Cloudflare Tunnel. The game shares this container's
+    # network, so all its ports are on this node's Tailscale IP.
+    # First start without TS_AUTHKEY: open the login link printed in this container's logs once;
+    # the node state is kept in /DATA/AppData/jx2-shiina/tailscale.
+    image: tailscale/tailscale:${TAILSCALE_IMAGE_VERSION:-v1.102.5}
+    container_name: jx2-shiina-tailscale
+    hostname: jx2-shiina
+    env_file:
+      - stack.env
+    environment:
+      - TS_HOSTNAME=jx2-shiina
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      - TS_ACCEPT_DNS=false
+    volumes:
+      - /DATA/AppData/jx2-shiina/tailscale:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      # Sign-up site (/register.php) + phpMyAdmin (/data/) on the LAN too. The game ports
+      # (32489, 6666) aren't published: clients must use the Tailscale IP, which the
+      # GameServer advertises.
+      - "11139:80"
+    restart: unless-stopped
+    network_mode: bridge
+
   jx2-shiina:
     # Võ Lâm 2 (JX2) 2021 Shiina offline server, built by github.com/tuannnh/jx2-shiina-docker.
     # Private GHCR package: Portainer needs a ghcr.io registry login (token with read:packages).
@@ -10,12 +40,11 @@ services:
     volumes:
       # MariaDB data (accounts, characters). Seeded with the original game DB on first start.
       - /DATA/AppData/jx2-shiina/mysql:/var/lib/mysql
-    ports:
-      # 32489 and 6666 are fixed by the game: the client logs in on 32489 and the GameServer
-      # tells clients to connect on 6666, so they can't move into the 111xx range.
-      - "32489:32489"   # Bishop - client login
-      - "6666:6666"     # GameServer
-      - "11139:80"      # account sign-up site (/register.php) + phpMyAdmin (/data/)
+    # Shares the Tailscale container's network: with EXTERNAL_IP=tailscale the entrypoint waits
+    # for tailscale0 and advertises its IP. If the sidecar is recreated, restart this one too.
+    network_mode: "service:jx2-shiina-tailscale"
+    depends_on:
+      - jx2-shiina-tailscale
     ulimits:
       core: 0
       nofile: 65535
@@ -23,4 +52,3 @@ services:
       # Only update when redeployed: an automatic restart would kick players out mid-game.
       - "com.centurylinklabs.watchtower.enable=false"
     restart: unless-stopped
-    network_mode: bridge

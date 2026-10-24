@@ -1,0 +1,105 @@
+name: dragonica
+services:
+  dragonica-data:
+    # Dragonica Chapter 5 server files + database backups (github.com/tuannnh/dragonica-docker).
+    # PRIVATE GHCR package: Portainer's ghcr.io registry login must be able to read it.
+    # Runs once per deploy: fills /DATA/AppData/dragonica/{server,backups} and fixes ownership.
+    image: ghcr.io/tuannnh/dragonica-docker/server-data:${DRAGONICA_DATA_VERSION:-latest}
+    container_name: dragonica-data
+    volumes:
+      - /DATA/AppData/dragonica:/target
+    restart: "no"
+    network_mode: none
+
+  dragonica-mssql:
+    # SQL Server 2022 (Express edition) with the restore script baked in: restores the eight
+    # DR2_*.bak from /backups on first start and creates the game login.
+    image: ghcr.io/tuannnh/dragonica-docker/mssql:${DRAGONICA_IMAGE_VERSION:-latest}
+    container_name: dragonica-mssql
+    hostname: dragonica-mssql
+    env_file:
+      - stack.env
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - /DATA/AppData/dragonica/backups:/backups:ro
+      - /DATA/AppData/dragonica/mssql:/var/opt/mssql
+    depends_on:
+      dragonica-data:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"IF (SELECT COUNT(*) FROM sys.databases WHERE name LIKE 'DR2[_]%') < 8 RAISERROR('restoring',16,1)\" || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 80
+      start_period: 60s
+    ulimits:
+      nofile: 65535
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - dragonica
+
+  dragonica:
+    # The original 32-bit Windows game servers under Wine (Immigration, Login, Contents, Center,
+    # Switch, Log and ~30 map servers). Needs ~12 GB RAM with every map server; MAP_SERVERS trims it.
+    # Players connect on the Tailscale sidecar's IP (PUBLIC_IP=tailscale): login 11002, channel 13011.
+    image: ghcr.io/tuannnh/dragonica-docker:${DRAGONICA_IMAGE_VERSION:-latest}
+    container_name: dragonica
+    hostname: dragonica
+    env_file:
+      - stack.env
+    environment:
+      - DB_HOST=dragonica-mssql
+      - DB_PORT=1433
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - /DATA/AppData/dragonica/server:/srv/dragonica
+    depends_on:
+      dragonica-data:
+        condition: service_completed_successfully
+      dragonica-mssql:
+        condition: service_healthy
+    ulimits:
+      nofile: 1048576
+    stop_grace_period: 30s
+    labels:
+      # Only update when redeployed: an automatic restart would kick players out mid-game.
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - dragonica
+
+  dragonica-tailscale:
+    # Players reach the game over Tailscale: the login server hands clients a raw IP for the
+    # channel port, so it can't sit behind a hostname. This sidecar joins the game's network
+    # namespace and puts the game's ports on this node's Tailscale IP.
+    # First start without TS_AUTHKEY: open the login link printed in this container's logs once;
+    # the node state is kept in /DATA/AppData/dragonica/tailscale.
+    image: tailscale/tailscale:${TAILSCALE_IMAGE_VERSION:-v1.102.5}
+    container_name: dragonica-tailscale
+    env_file:
+      - stack.env
+    environment:
+      - TS_HOSTNAME=dragonica
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      - TS_ACCEPT_DNS=false
+    volumes:
+      - /DATA/AppData/dragonica/tailscale:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    network_mode: "service:dragonica"
+    depends_on:
+      - dragonica
+    restart: unless-stopped
+
+networks:
+  dragonica:
+    name: dragonica
+    driver: bridge

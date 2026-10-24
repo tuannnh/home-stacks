@@ -11,6 +11,9 @@ services:
     volumes:
       # MariaDB data (accounts, characters). Seeded with the original game DB on first start.
       - /DATA/AppData/jx2-shiina/mysql:/var/lib/mysql
+      # Client package for players, served by the sign-up site at /download/ (over Tailscale:
+      # http://<tailscale ip>/download/JX2-Client.zip). Drop the zip into this host folder.
+      - /DATA/AppData/jx2-shiina/downloads:/var/www/html/download
     ports:
       # Sign-up site (/register.php) + phpMyAdmin (/data/) on the LAN too. The game ports
       # (32489, 6666) aren't published: clients must use the Tailscale IP, which the

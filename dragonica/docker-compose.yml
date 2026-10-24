@@ -84,15 +84,22 @@ services:
     # namespace and puts the game's ports on this node's Tailscale IP.
     # First start without TS_AUTHKEY: open the login link printed in this container's logs once;
     # the node state is kept in /DATA/AppData/dragonica/tailscale.
+    # The image's own boot script abandons an interactive login after 60 s and restarts with a new
+    # node key, so a link opened a minute late never completes. Running tailscaled + "tailscale up"
+    # directly waits for the login as long as it takes (and still uses TS_AUTHKEY when set).
     image: tailscale/tailscale:${TAILSCALE_IMAGE_VERSION:-v1.102.5}
     container_name: dragonica-tailscale
     env_file:
       - stack.env
-    environment:
-      - TS_HOSTNAME=dragonica
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
-      - TS_ACCEPT_DNS=false
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        mkdir -p /var/run/tailscale
+        tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock --tun=tailscale0 &
+        sleep 3
+        tailscale --socket=/var/run/tailscale/tailscaled.sock up --hostname=dragonica --accept-dns=false $${TS_AUTHKEY:+--authkey=$$TS_AUTHKEY}
+        echo "tailscale is up: $$(tailscale --socket=/var/run/tailscale/tailscaled.sock ip -4)"
+        wait
     volumes:
       - /DATA/AppData/dragonica/tailscale:/var/lib/tailscale
     devices:

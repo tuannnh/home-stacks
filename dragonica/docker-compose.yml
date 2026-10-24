@@ -55,6 +55,11 @@ services:
     environment:
       - DB_HOST=dragonica-mssql
       - DB_PORT=1433
+      - DB_USER=${GAME_DB_USER:-dragonica}
+      - DB_PASSWORD=${GAME_DB_PASSWORD}
+      # how long the launcher waits for the Tailscale sidecar's address (first start: you must
+      # approve the login link from the dragonica-tailscale logs within this time)
+      - TAILSCALE_WAIT=1800
       - TZ=Asia/Ho_Chi_Minh
     volumes:
       - /DATA/AppData/dragonica/server:/srv/dragonica

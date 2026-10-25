@@ -78,6 +78,23 @@ services:
     networks:
       - dragonica
 
+  dragonica-sqlproxy:
+    # Exposes SQL Server on the Tailscale sidecar's address (100.122.5.85:1433) for the GM Tool:
+    # shares the game container's network namespace (where tailscale0 lives) and forwards to
+    # dragonica-mssql over the stack network. Reachable from the tailnet only; no host port is used.
+    image: alpine/socat:1.8.0.0
+    container_name: dragonica-sqlproxy
+    command: TCP-LISTEN:1433,fork,reuseaddr TCP:dragonica-mssql:1433
+    network_mode: service:dragonica
+    depends_on:
+      dragonica:
+        condition: service_started
+      dragonica-mssql:
+        condition: service_healthy
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+
   dragonica-tailscale:
     # Players reach the game over Tailscale: the login server hands clients a raw IP for the
     # channel port, so it can't sit behind a hostname. This sidecar joins the game's network

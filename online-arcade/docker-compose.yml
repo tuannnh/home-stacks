@@ -1,0 +1,26 @@
+name: online-arcade
+services:
+  online-arcade:
+    # Online Arcade: FBNeo arcade netplay (host streams over WebRTC, joysticks, save states, cheats).
+    # Built by github.com/tuannnh/online-arcade (.github/workflows/docker.yml), multi-arch.
+    # Private GHCR package: Portainer pulls it with its ghcr.io registry login.
+    image: ghcr.io/tuannnh/online-arcade:${ONLINE_ARCADE_IMAGE_VERSION:-latest}
+    container_name: online-arcade
+    env_file:
+      - stack.env
+    volumes:
+      # ROM zips (FBNeo sets, e.g. nbbatman.zip, dino.zip, mslug*.zip + neogeo.zip). Only the
+      # host of a room ever downloads them. Drop new zips here and press Refresh in the lobby.
+      - /DATA/AppData/online-arcade/roms:/app/roms
+      # Save states (saves/<game>/) and cheat files (cheats/<game>.ini overrides, .cache/).
+      - /DATA/AppData/online-arcade/data:/app/data
+    ports:
+      # Web app + WebSocket. Joysticks need HTTPS for remote players: put it behind
+      # Nginx Proxy Manager / Cloudflare with WebSocket support enabled.
+      - "11163:3000"
+    labels:
+      # Only update when redeployed (CI calls the stack webhook after each build): an automatic
+      # restart would drop everyone out of a running game.
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    network_mode: bridge

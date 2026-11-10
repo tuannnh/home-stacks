@@ -1,0 +1,33 @@
+name: camera-archiver
+services:
+
+  camera-archiver:
+    # Merges the Aqara clips on the NAS into hourly files and uploads them to copytele.
+    # Source: https://github.com/tuannnh/camera-archiver
+    image: ghcr.io/tuannnh/camera-archiver:${CAMERA_ARCHIVER_IMAGE_VERSION:-latest}
+    container_name: camera-archiver
+    restart: unless-stopped
+    env_file:
+      - stack.env
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - nas-cameras:/src
+      # state.db + temporary merge files (deleted after each upload)
+      - /DATA/AppData/camera-archiver:/data
+    # reach copytele (:11117) and ntfy (:11141) published on the host
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    network_mode: bridge
+
+volumes:
+  # OMV NAS "cameras" share over SMB, as the same user the Aqara camera writes with
+  # (rw is needed so clips can be deleted after KEEP_DAYS).
+  # NOTE: docker keeps volume options from the first deploy. After changing the
+  # password, stop the stack and `docker volume rm camera-archiver_nas-cameras`.
+  nas-cameras:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: //10.1.0.80/cameras
+      o: "addr=10.1.0.80,username=${NAS_SMB_USER:-camera},password=${NAS_SMB_PASS},vers=3.0,uid=0,gid=0,file_mode=0664,dir_mode=0775,iocharset=utf8"
